@@ -31,7 +31,7 @@ public class CardTest {
 		WildCard wildcard = new WildCard();
 		Pack pack = new Pack();
 		while (pack.numCards() > 0) {
-			assertThat(wildcard.canBePlayedOn(pack.takeCard())).isTrue();
+			assertThat(wildcard.canBePlayedOn(pack.drawCard())).isTrue();
 		}
 	}
 
@@ -65,22 +65,42 @@ public class CardTest {
 
 	@Test
 	public void testSkipCardLogic() {
-		SkipCard reverseCard = new SkipCard(Colour.BLUE);
-		assertThat(reverseCard.canBePlayedOn(new Card(3, Colour.BLUE))).isTrue();
-		assertThat(reverseCard.canBePlayedOn(new Card(3, Colour.RED))).isFalse();
+		SkipCard skipCard = new SkipCard(Colour.BLUE);
+		assertThat(skipCard.canBePlayedOn(new Card(3, Colour.BLUE))).isTrue();
+		assertThat(skipCard.canBePlayedOn(new Card(3, Colour.RED))).isFalse();
 	}
 
 	@Test
 	public void testSkipCardStep() {
-		SkipCard reverseCard = new SkipCard(Colour.BLUE);
-		assertThat(reverseCard.nextStep(+1)).isEqualTo(+2);
-		assertThat(reverseCard.nextStep(-1)).isEqualTo(-2);
+		SkipCard skipCard = new SkipCard(Colour.BLUE);
+		assertThat(skipCard.nextStep(+1)).isEqualTo(+2);
+		assertThat(skipCard.nextStep(-1)).isEqualTo(-2);
 	}
 
 	@Test
 	public void testSkipCardToString() {
-		SkipCard reverseCard = new SkipCard(Colour.BLUE);
-		assertThat(reverseCard.toString()).isEqualTo("Skip BLUE");
+		SkipCard skipCard = new SkipCard(Colour.BLUE);
+		assertThat(skipCard.toString()).isEqualTo("Skip BLUE");
+	}
+
+	@Test
+	public void testDrawTwoCardLogic() {
+		DrawTwoCard drawTwoCard = new DrawTwoCard(Colour.BLUE);
+		assertThat(drawTwoCard.canBePlayedOn(new Card(3, Colour.BLUE))).isTrue();
+		assertThat(drawTwoCard.canBePlayedOn(new Card(3, Colour.RED))).isFalse();
+	}
+
+	@Test
+	public void testDrawTwoCardStep() {
+		DrawTwoCard drawTwoCard = new DrawTwoCard(Colour.BLUE);
+		assertThat(drawTwoCard.nextStep(+1)).isEqualTo(+2);
+		assertThat(drawTwoCard.nextStep(-1)).isEqualTo(-2);
+	}
+
+	@Test
+	public void testDrawTwoCardToString() {
+		DrawTwoCard drawTwoCard = new DrawTwoCard(Colour.BLUE);
+		assertThat(drawTwoCard.toString()).isEqualTo("Draw Two BLUE");
 	}
 
 }

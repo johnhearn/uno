@@ -58,7 +58,7 @@ public class GameTest {
 
 	@Test
 	public void testStalemate() {
-		game = new UnoGame(new PassingPlayer());
+		game = new UnoGame(new MockPlayer(null));
 		Player winner = game.play();
 		assertThat(winner).isNull();
 	}
@@ -66,8 +66,8 @@ public class GameTest {
 	@Test
 	public void testPickupOnPass() {
 		int numCards = pack.numCards();
-		pile.addCard(pack.takeCard());
-		PassingPlayer player = new PassingPlayer();
+		pile.addCard(pack.drawCard());
+		MockPlayer player = new MockPlayer(null);
 		game = new UnoGame(pack, pile, player);
 		game.nextTurn(player);
 		assertThat(pack.numCards()).isEqualTo(numCards - 2);
@@ -75,34 +75,53 @@ public class GameTest {
 		assertThat(player.numCards()).isEqualTo(1);
 	}
 
-	private static class PassingPlayer extends Player {
+	private static class MockPlayer extends Player {
+		final Card card;
+		public MockPlayer(Card card) {
+			this.card = card;
+		}
 		@Override
 		public Card playCard(Card topCard) {
-			return null;
+			return card;
 		}
 	}
 
 	@Test
 	public void testNextPlayerLogic() {
-		assertThat(game.nextPlayer(0, new Card(3, Colour.BLUE))).isEqualTo(1);
-		assertThat(game.nextPlayer(1, new Card(3, Colour.BLUE))).isEqualTo(2);
-		assertThat(game.nextPlayer(2, new Card(3, Colour.BLUE))).isEqualTo(0);
+		assertThat(game.nextPlayer(new Card(3, Colour.BLUE))).isEqualTo(1);
+		assertThat(game.nextPlayer(new Card(3, Colour.BLUE))).isEqualTo(2);
+		assertThat(game.nextPlayer(new Card(3, Colour.BLUE))).isEqualTo(0);
 	}
 
 	@Test
 	public void testNextPlayerReverseLogic() {
-		assertThat(game.nextPlayer(0, new ReverseCard(Colour.BLUE))).isEqualTo(2);
-		assertThat(game.nextPlayer(2, new Card(3, Colour.BLUE))).isEqualTo(1);
-		assertThat(game.nextPlayer(1, new ReverseCard(Colour.BLUE))).isEqualTo(2);
-		assertThat(game.nextPlayer(2, new Card(3, Colour.BLUE))).isEqualTo(0);
+		assertThat(game.nextPlayer(new ReverseCard(Colour.BLUE))).isEqualTo(2);
+		assertThat(game.nextPlayer(new Card(3, Colour.BLUE))).isEqualTo(1);
+		assertThat(game.nextPlayer(new ReverseCard(Colour.BLUE))).isEqualTo(2);
+		assertThat(game.nextPlayer(new Card(3, Colour.BLUE))).isEqualTo(0);
 	}
 
 	@Test
 	public void testNextPlayerSkipLogic() {
-		assertThat(game.nextPlayer(0, new SkipCard(Colour.BLUE))).isEqualTo(2);
-		assertThat(game.nextPlayer(2, new Card(3, Colour.BLUE))).isEqualTo(0);
-		assertThat(game.nextPlayer(1, new ReverseCard(Colour.BLUE))).isEqualTo(0);
-		assertThat(game.nextPlayer(2, new SkipCard(Colour.BLUE))).isEqualTo(0);
-		assertThat(game.nextPlayer(0, new Card(3, Colour.BLUE))).isEqualTo(2);
+		assertThat(game.nextPlayer(new SkipCard(Colour.BLUE))).isEqualTo(2);
+		assertThat(game.nextPlayer(new Card(3, Colour.BLUE))).isEqualTo(0);
+		assertThat(game.nextPlayer(new Card(4, Colour.BLUE))).isEqualTo(1);
+		assertThat(game.nextPlayer(new ReverseCard(Colour.BLUE))).isEqualTo(0);
+		assertThat(game.nextPlayer(new SkipCard(Colour.BLUE))).isEqualTo(1);
+		assertThat(game.nextPlayer(new Card(3, Colour.BLUE))).isEqualTo(0);
 	}
+
+	@Test
+	public void testNextPlayerDrawTwoLogic() {
+		assertThat(game.nextPlayer(new DrawTwoCard(Colour.BLUE))).isEqualTo(2);
+	}
+
+	@Test
+	public void testNextTurnDrawTwoLogic() {
+		pile.addCard(new Card(1, Colour.BLUE));
+		Player player = new MockPlayer(new DrawTwoCard(Colour.BLUE));
+		game.nextTurn(player);
+		assertThat(players[1].numCards()).isEqualTo(2);
+	}
+
 }

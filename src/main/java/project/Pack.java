@@ -22,10 +22,13 @@ public class Pack extends CardHolder {
 		for(Colour colour : Colour.values()) {
 			cards.add(new SkipCard(colour));
 		}
+		for(Colour colour : Colour.values()) {
+			cards.add(new DrawTwoCard(colour));
+		}
 		shuffle();
 	}
 
-	public Card takeCard() {
+	public Card drawCard() {
 		return cards.remove(0);
 	}
 

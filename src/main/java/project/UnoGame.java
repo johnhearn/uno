@@ -6,6 +6,7 @@ public class UnoGame {
 	private final Pile pile;
 	private final Player[] players;
 
+	private int currentPosition = 0;
 	private int step = +1;
 
 	protected UnoGame(int players) {
@@ -30,48 +31,54 @@ public class UnoGame {
 
 	public Player play() {
 		deal();
-		int currentPlayer = 0;
 		while (pack.numCards() > 0) {
-			Player player = players[currentPlayer];
-			Card lastCardPlayed = nextTurn(player);
-			if (lastCardPlayed != null) {
-				if (player.numCards() == 0) {
-					System.out.println(player + " wins");
-					return player;
-				}
+			Player player = players[currentPosition];
+			nextTurn(player);
+			if (player.numCards() == 0) {
+				System.out.println(player + " wins");
+				return player;
 			}
-			currentPlayer = nextPlayer(currentPlayer, lastCardPlayed);
 		}
 		// We ran out of cards, stalemate, doesn't often happen in real games
 		return null;
 	}
 
-	protected int nextPlayer(int i, Card lastCardPlayed) {
-		step = (step > 0) ? +1 : -1; 
-		if (lastCardPlayed != null) {
-			step = lastCardPlayed.nextStep(step);
-		}
-		return (i + players.length + step) % players.length;
-	}
-
 	protected void deal() {
 		for (int j = 0; j < 7; j++) {
 			for (int i = 0; i < players.length; i++) {
-				players[i].giveCard(pack.takeCard());
+				players[i].giveCard(pack.drawCard());
 			}
 		}
-		pile.addCard(pack.takeCard());
+		pile.addCard(pack.drawCard());
 	}
 
-	public Card nextTurn(Player player) {
+	protected Card nextTurn(Player player) {
 		Card cardPlayed = player.playCard(pile.topCard());
 		if (cardPlayed != null) {
 			System.out.println(player + " has discarded " + cardPlayed);
 			pile.addCard(cardPlayed);
+			if (cardPlayed instanceof DrawTwoCard) {
+				players[position(currentPosition + step)].giveCard(pack.drawCard());
+				players[position(currentPosition + step)].giveCard(pack.drawCard());
+			}
 		} else {
-			player.giveCard(pack.takeCard());
+			player.giveCard(pack.drawCard());
 			System.out.println(player + " picked up card");
 		}
+		nextPlayer(cardPlayed);
 		return cardPlayed;
+	}
+
+	protected int nextPlayer(Card lastCardPlayed) {
+		if (lastCardPlayed != null) {
+			step = lastCardPlayed.nextStep(step);
+		}
+		currentPosition = position(currentPosition + step);
+		step = (step > 0) ? +1 : -1;
+		return currentPosition;
+	}
+
+	private int position(int i) {
+		return (i + players.length) % players.length;
 	}
 }
