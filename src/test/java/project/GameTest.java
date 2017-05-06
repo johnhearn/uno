@@ -63,12 +63,12 @@ public class GameTest {
 	@Test
 	public void testPileTopCard() {
 		Pile pile = new Pile();
-		pile.addCard(new Card(1, Colour.GREEN));
-		assertThat(pile.topCard()).isEqualTo(new Card(1, Colour.GREEN));
+		pile.addCard(new Card(2, Colour.GREEN));
+		assertThat(pile.topCard()).isEqualTo(new Card(2, Colour.GREEN));
 		pile.addCard(new Card(2, Colour.RED));
 		assertThat(pile.topCard()).isEqualTo(new Card(2, Colour.RED));
 		pile.addCard(new Card(2, Colour.BLUE));
-		assertThat(pile.topCard()).isEqualTo(new Card(1, Colour.BLUE));
+		assertThat(pile.topCard()).isEqualTo(new Card(2, Colour.BLUE));
 	}
 
 	@Test(expected=RuntimeException.class)
