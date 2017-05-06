@@ -3,6 +3,7 @@ package project;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.Arrays;
+import java.util.List;
 import java.util.stream.Stream;
 
 import org.junit.Test;
@@ -26,6 +27,11 @@ public class GameTest {
 			}
 		}
 		assertThat(countTotalCards(game)).isEqualTo(cards);
+
+		List<Card> pile = game.getPile().cards;
+		for (int i = 1; i < pile.size(); i++) {
+			assertThat(pile.get(i).canBePlayedOn(pile.get(i - 1))).isTrue();
+		}
 	}
 
 	@Test
@@ -37,7 +43,7 @@ public class GameTest {
 			assertThat(player.numCards()).isEqualTo(7);
 		}
 		assertThat(game.getPile().numCards()).isEqualTo(1);
-		assertThat(game.getPack().numCards()).isEqualTo(cards - 7*PLAYERS - 1);
+		assertThat(game.getPack().numCards()).isEqualTo(cards - 7 * PLAYERS - 1);
 		assertThat(countTotalCards(game)).isEqualTo(cards);
 	}
 
@@ -69,4 +75,59 @@ public class GameTest {
 		assertThat(pile.topCard()).isEqualTo(new Card(3, Colour.BLUE));
 	}
 
+	private void setupTestHand(Player player) {
+		player.giveCard(new Card(6, Colour.RED));
+		player.giveCard(new Card(5, Colour.GREEN));
+	}
+
+	@Test
+	public void testPlayerPlaysPlayable() {
+		Player player = new Player();
+		setupTestHand(player);
+
+		Card topCard = new Card(5, Colour.BLUE);
+
+		Card playCard = player.playCard(topCard);
+		assertThat(playCard).isEqualTo(new Card(5, Colour.GREEN));
+		assertThat(player.numCards()).isEqualTo(1);
+	}
+
+	@Test
+	public void testPlayerHasNoPlayableCard() {
+		Player player = new Player();
+		setupTestHand(player);
+
+		Card topCard = new Card(4, Colour.YELLOW);
+
+		Card playCard = player.playCard(topCard);
+		assertThat(playCard).isNull();
+		assertThat(player.numCards()).isEqualTo(2);
+	}
+
+	@Test
+	public void testStalemate() {
+		UnoGame game = new UnoGame(new PassingPlayer());
+		Player winner = game.play();
+		assertThat(winner).isNull();
+	}
+
+	@Test
+	public void testPickupOnPass() {
+		Pack pack = new Pack();
+		Pile pile = new Pile();
+		pile.addCard(pack.takeCard());
+		PassingPlayer player = new PassingPlayer();
+		UnoGame game = new UnoGame(pack, pile, player);
+		game.nextTurn(player);
+		assertThat(pack.numCards()).isEqualTo(34);
+		assertThat(pile.numCards()).isEqualTo(1);
+		assertThat(player.numCards()).isEqualTo(1);
+	}
+
+	private static class PassingPlayer extends Player {
+		@Override
+		public Card playCard(Card topCard) {
+			return null;
+		}
+	}
 }

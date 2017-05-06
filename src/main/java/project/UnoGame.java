@@ -16,23 +16,37 @@ public class UnoGame {
 		}
 	}
 
+	public UnoGame(Player... players) {
+		this(new Pack(), new Pile(), players);
+	}
+
+	protected UnoGame(Pack pack, Pile pile, Player... players) {
+		this.pack = pack;
+		this.pile = pile;
+		this.players = players;
+	}
+
 	public Player play() {
 		deal();
-		while (true) {
+		int passesInThisRound;
+		do {
+			passesInThisRound = 0;
 			for (int i = 0; i < players.length; i++) {
-				Card card = players[i].playCard(pile.topCard());
-				pile.addCard(card);
-				if (players[i].numCards() == 0) {
+				if (nextTurn(players[i])) {
+					passesInThisRound++;
+				} else if (players[i].numCards() == 0) {
 					return players[i];
 				}
 			}
-		}
+		} while (passesInThisRound < players.length);
+		// Everybody passed, stalemate, doesn't often happen in real games
+		return null;
 	}
 
 	protected void deal() {
 		for (int j = 0; j < 7; j++) {
 			for (int i = 0; i < players.length; i++) {
-				this.players[i].giveCard(pack.takeCard());
+				players[i].giveCard(pack.takeCard());
 			}
 		}
 		pile.addCard(pack.takeCard());
@@ -48,5 +62,15 @@ public class UnoGame {
 
 	public Pile getPile() {
 		return pile;
+	}
+
+	public boolean nextTurn(Player player) {
+		Card card = player.playCard(pile.topCard());
+		if (card != null) {
+			pile.addCard(card);
+		} else {
+			player.giveCard(pack.takeCard());
+		}
+		return card == null;
 	}
 }

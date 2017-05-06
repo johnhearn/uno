@@ -9,9 +9,4 @@ public class Pile extends CardHolder {
 	public Card topCard() {
 		return cards.get(cards.size()-1);
 	}
-
-	public Card pickupCard() {
-		return cards.remove(cards.size()-1);
-	}
-	
 }
