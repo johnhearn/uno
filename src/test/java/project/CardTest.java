@@ -39,6 +39,8 @@ public class CardTest {
 	public void testWildCardToString() {
 		WildCard wildcard = new WildCard();
 		assertThat(wildcard.toString()).isEqualTo("Wild");
+		wildcard.colour = Colour.BLUE;
+		assertThat(wildcard.toString()).isEqualTo("Wild BLUE");
 	}
 
 	@Test

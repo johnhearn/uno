@@ -13,6 +13,6 @@ public class WildCard extends Card {
 	
 	@Override
 	public String toString() {
-		return "Wild";
+		return "Wild" + ((colour == null) ? "" : " " + colour.name());
 	}
 }
