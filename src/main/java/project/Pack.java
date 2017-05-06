@@ -19,6 +19,9 @@ public class Pack extends CardHolder {
 		for(Colour colour : Colour.values()) {
 			cards.add(new ReverseCard(colour));
 		}
+		for(Colour colour : Colour.values()) {
+			cards.add(new SkipCard(colour));
+		}
 		shuffle();
 	}
 

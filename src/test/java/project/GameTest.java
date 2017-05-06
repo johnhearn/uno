@@ -67,8 +67,16 @@ public class GameTest {
 		assertThat(pile.topCard()).isEqualTo(new Card(1, Colour.GREEN));
 		pile.addCard(new Card(2, Colour.RED));
 		assertThat(pile.topCard()).isEqualTo(new Card(2, Colour.RED));
+		pile.addCard(new Card(2, Colour.BLUE));
+		assertThat(pile.topCard()).isEqualTo(new Card(1, Colour.BLUE));
+	}
+
+	@Test(expected=RuntimeException.class)
+	public void testPileDoesNotAcceptInvalidCard() {
+		Pile pile = new Pile();
+		pile.addCard(new Card(1, Colour.GREEN));
+		pile.addCard(new Card(2, Colour.GREEN));
 		pile.addCard(new Card(3, Colour.BLUE));
-		assertThat(pile.topCard()).isEqualTo(new Card(3, Colour.BLUE));
 	}
 
 	private void setupTestHand(Player player) {
@@ -143,5 +151,15 @@ public class GameTest {
 		assertThat(game.nextPlayer(2, new Card(3, Colour.BLUE))).isEqualTo(1);
 		assertThat(game.nextPlayer(1, new ReverseCard(Colour.BLUE))).isEqualTo(2);
 		assertThat(game.nextPlayer(2, new Card(3, Colour.BLUE))).isEqualTo(0);
+	}
+
+	@Test
+	public void testNextPlayerSkipLogic() {
+		UnoGame game = new UnoGame(new Player(), new Player(), new Player());
+		assertThat(game.nextPlayer(0, new SkipCard(Colour.BLUE))).isEqualTo(2);
+		assertThat(game.nextPlayer(2, new Card(3, Colour.BLUE))).isEqualTo(0);
+		assertThat(game.nextPlayer(1, new ReverseCard(Colour.BLUE))).isEqualTo(0);
+		assertThat(game.nextPlayer(2, new SkipCard(Colour.BLUE))).isEqualTo(0);
+		assertThat(game.nextPlayer(0, new Card(3, Colour.BLUE))).isEqualTo(2);
 	}
 }

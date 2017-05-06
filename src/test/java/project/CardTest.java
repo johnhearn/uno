@@ -61,4 +61,24 @@ public class CardTest {
 		assertThat(reverseCard.toString()).isEqualTo("Reverse BLUE");
 	}
 
+	@Test
+	public void testSkipCardLogic() {
+		SkipCard reverseCard = new SkipCard(Colour.BLUE);
+		assertThat(reverseCard.canBePlayedOn(new Card(3, Colour.BLUE))).isTrue();
+		assertThat(reverseCard.canBePlayedOn(new Card(3, Colour.RED))).isFalse();
+	}
+
+	@Test
+	public void testSkipCardStep() {
+		SkipCard reverseCard = new SkipCard(Colour.BLUE);
+		assertThat(reverseCard.nextStep(+1)).isEqualTo(+2);
+		assertThat(reverseCard.nextStep(-1)).isEqualTo(-2);
+	}
+
+	@Test
+	public void testSkipCardToString() {
+		SkipCard reverseCard = new SkipCard(Colour.BLUE);
+		assertThat(reverseCard.toString()).isEqualTo("Skip BLUE");
+	}
+
 }

@@ -47,6 +47,7 @@ public class UnoGame {
 	}
 
 	protected int nextPlayer(int i, Card lastCardPlayed) {
+		step = (step > 0) ? +1 : -1; 
 		if (lastCardPlayed != null) {
 			step = lastCardPlayed.nextStep(step);
 		}
