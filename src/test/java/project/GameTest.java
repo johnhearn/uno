@@ -2,8 +2,6 @@ package project;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import java.util.Arrays;
-import java.util.List;
 import java.util.stream.Stream;
 
 import org.junit.Test;
@@ -12,43 +10,41 @@ import project.Card.Colour;
 
 public class GameTest {
 
-	private final int PLAYERS = 3;
-
+	// System under test
+	//
+	private Pack pack = new Pack();
+	private Pile pile = new Pile();
+	private Player[] players = new Player[] { new Player(), new Player(), new Player() };
+	private UnoGame game = new UnoGame(pack, pile, players);
+	
 	@Test
 	public void testGame() {
-		UnoGame game = new UnoGame(PLAYERS);
-		int cards = game.getPack().numCards();
+		int numCards = pack.numCards();
 		Player winner = game.play();
-		for (Player player : game.players()) {
+		for (Player player : players) {
 			if (player == winner) {
 				assertThat(player.numCards()).isEqualTo(0);
 			} else {
 				assertThat(player.numCards()).isNotEqualTo(0);
 			}
 		}
-		assertThat(countTotalCards(game)).isEqualTo(cards);
-
-		List<Card> pile = game.getPile().cards;
-		for (int i = 1; i < pile.size(); i++) {
-			assertThat(pile.get(i).canBePlayedOn(pile.get(i - 1))).isTrue();
-		}
+		assertThat(countTotalCards(pack, pile, players)).isEqualTo(numCards);
 	}
 
 	@Test
 	public void testDeal() {
-		UnoGame game = new UnoGame(PLAYERS);
-		int cards = game.getPack().numCards();
+		int numCards = pack.numCards();
 		game.deal();
-		for (Player player : game.players()) {
+		for (Player player : players) {
 			assertThat(player.numCards()).isEqualTo(7);
 		}
-		assertThat(game.getPile().numCards()).isEqualTo(1);
-		assertThat(game.getPack().numCards()).isEqualTo(cards - 7 * PLAYERS - 1);
-		assertThat(countTotalCards(game)).isEqualTo(cards);
+		assertThat(pile.numCards()).isEqualTo(1);
+		assertThat(pack.numCards()).isEqualTo(numCards - 7 * players.length - 1);
+		assertThat(countTotalCards(pack, pile, players)).isEqualTo(numCards);
 	}
 
-	private int countTotalCards(UnoGame game) {
-		int finalCardCount = Stream.concat(Stream.of(game.getPack(), game.getPile()), Arrays.stream(game.players()))
+	private int countTotalCards(Pack pack, Pile pile, Player... players) {
+		int finalCardCount = Stream.concat(Stream.of(pack, pile), Stream.of(players))
 				.mapToInt((ch) -> ch.numCards()).sum();
 		return finalCardCount;
 	}
@@ -62,7 +58,6 @@ public class GameTest {
 
 	@Test
 	public void testPileTopCard() {
-		Pile pile = new Pile();
 		pile.addCard(new Card(2, Colour.GREEN));
 		assertThat(pile.topCard()).isEqualTo(new Card(2, Colour.GREEN));
 		pile.addCard(new Card(2, Colour.RED));
@@ -71,9 +66,8 @@ public class GameTest {
 		assertThat(pile.topCard()).isEqualTo(new Card(2, Colour.BLUE));
 	}
 
-	@Test(expected=RuntimeException.class)
+	@Test(expected = RuntimeException.class)
 	public void testPileDoesNotAcceptInvalidCard() {
-		Pile pile = new Pile();
 		pile.addCard(new Card(1, Colour.GREEN));
 		pile.addCard(new Card(2, Colour.GREEN));
 		pile.addCard(new Card(3, Colour.BLUE));
@@ -110,19 +104,17 @@ public class GameTest {
 
 	@Test
 	public void testStalemate() {
-		UnoGame game = new UnoGame(new PassingPlayer());
+		game = new UnoGame(new PassingPlayer());
 		Player winner = game.play();
 		assertThat(winner).isNull();
 	}
 
 	@Test
 	public void testPickupOnPass() {
-		Pack pack = new Pack();
 		int numCards = pack.numCards();
-		Pile pile = new Pile();
 		pile.addCard(pack.takeCard());
 		PassingPlayer player = new PassingPlayer();
-		UnoGame game = new UnoGame(pack, pile, player);
+		game = new UnoGame(pack, pile, player);
 		game.nextTurn(player);
 		assertThat(pack.numCards()).isEqualTo(numCards - 2);
 		assertThat(pile.numCards()).isEqualTo(1);
@@ -138,7 +130,6 @@ public class GameTest {
 
 	@Test
 	public void testNextPlayerLogic() {
-		UnoGame game = new UnoGame(new Player(), new Player(), new Player());
 		assertThat(game.nextPlayer(0, new Card(3, Colour.BLUE))).isEqualTo(1);
 		assertThat(game.nextPlayer(1, new Card(3, Colour.BLUE))).isEqualTo(2);
 		assertThat(game.nextPlayer(2, new Card(3, Colour.BLUE))).isEqualTo(0);
@@ -146,7 +137,6 @@ public class GameTest {
 
 	@Test
 	public void testNextPlayerReverseLogic() {
-		UnoGame game = new UnoGame(new Player(), new Player(), new Player());
 		assertThat(game.nextPlayer(0, new ReverseCard(Colour.BLUE))).isEqualTo(2);
 		assertThat(game.nextPlayer(2, new Card(3, Colour.BLUE))).isEqualTo(1);
 		assertThat(game.nextPlayer(1, new ReverseCard(Colour.BLUE))).isEqualTo(2);
@@ -155,7 +145,6 @@ public class GameTest {
 
 	@Test
 	public void testNextPlayerSkipLogic() {
-		UnoGame game = new UnoGame(new Player(), new Player(), new Player());
 		assertThat(game.nextPlayer(0, new SkipCard(Colour.BLUE))).isEqualTo(2);
 		assertThat(game.nextPlayer(2, new Card(3, Colour.BLUE))).isEqualTo(0);
 		assertThat(game.nextPlayer(1, new ReverseCard(Colour.BLUE))).isEqualTo(0);

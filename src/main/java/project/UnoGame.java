@@ -63,18 +63,6 @@ public class UnoGame {
 		pile.addCard(pack.takeCard());
 	}
 
-	public Player[] players() {
-		return players;
-	}
-
-	public Pack getPack() {
-		return pack;
-	}
-
-	public Pile getPile() {
-		return pile;
-	}
-
 	public Card nextTurn(Player player) {
 		Card cardPlayed = player.playCard(pile.topCard());
 		if (cardPlayed != null) {
