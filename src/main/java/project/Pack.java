@@ -13,6 +13,9 @@ public class Pack extends CardHolder {
 				cards.add(new Card(i, colour));
 			}
 		}
+		for (int i = 0; i < 4; i++) {
+			cards.add(new WildCard());
+		}
 		shuffle();
 	}
 

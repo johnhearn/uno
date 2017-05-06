@@ -65,6 +65,22 @@ public class GameTest {
 	}
 
 	@Test
+	public void testWildCardLogic() {
+		WildCard wildcard = new WildCard();
+		Pack pack = new Pack();
+		while (pack.numCards() > 0) {
+			assertThat(wildcard.canBePlayedOn(pack.takeCard())).isTrue();
+		}
+	}
+
+	@Test
+	public void testSetColourWhenPlayingWildCard() {
+		Player player = new Player();
+		player.giveCard(new WildCard());
+		assertThat(player.playCard(new Card(3, Colour.BLUE)).colour).isNotNull();
+	}
+
+	@Test
 	public void testPileTopCard() {
 		Pile pile = new Pile();
 		pile.addCard(new Card(1, Colour.GREEN));
@@ -114,12 +130,13 @@ public class GameTest {
 	@Test
 	public void testPickupOnPass() {
 		Pack pack = new Pack();
+		int numCards = pack.numCards();
 		Pile pile = new Pile();
 		pile.addCard(pack.takeCard());
 		PassingPlayer player = new PassingPlayer();
 		UnoGame game = new UnoGame(pack, pile, player);
 		game.nextTurn(player);
-		assertThat(pack.numCards()).isEqualTo(34);
+		assertThat(pack.numCards()).isEqualTo(numCards - 2);
 		assertThat(pile.numCards()).isEqualTo(1);
 		assertThat(player.numCards()).isEqualTo(1);
 	}

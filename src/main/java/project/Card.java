@@ -10,7 +10,7 @@ public class Card {
 	}
 	
 	private final int number;
-	private final Colour colour;
+	protected Colour colour;
 
 	public Card(int number, Colour colour) {
 		super();
