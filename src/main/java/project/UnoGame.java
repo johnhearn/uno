@@ -6,6 +6,8 @@ public class UnoGame {
 	private final Pile pile;
 	private final Player[] players;
 
+	private int step = +1;
+
 	protected UnoGame(int players) {
 		super();
 		this.pack = new Pack();
@@ -28,18 +30,27 @@ public class UnoGame {
 
 	public Player play() {
 		deal();
+		int currentPlayer = 0;
 		while (pack.numCards() > 0) {
-			for (int i = 0; i < players.length; i++) {
-				if (nextTurn(players[i])) {
-				} else {
-					if (players[i].numCards() == 0) {
-						return players[i];
-					}
+			Player player = players[currentPlayer];
+			Card lastCardPlayed = nextTurn(player);
+			if (lastCardPlayed != null) {
+				if (player.numCards() == 0) {
+					System.out.println(player + " wins");
+					return player;
 				}
 			}
+			currentPlayer = nextPlayer(currentPlayer, lastCardPlayed);
 		}
 		// We ran out of cards, stalemate, doesn't often happen in real games
 		return null;
+	}
+
+	protected int nextPlayer(int i, Card lastCardPlayed) {
+		if (lastCardPlayed != null) {
+			step = lastCardPlayed.nextStep(step);
+		}
+		return (i + players.length + step) % players.length;
 	}
 
 	protected void deal() {
@@ -63,13 +74,15 @@ public class UnoGame {
 		return pile;
 	}
 
-	public boolean nextTurn(Player player) {
-		Card card = player.playCard(pile.topCard());
-		if (card != null) {
-			pile.addCard(card);
+	public Card nextTurn(Player player) {
+		Card cardPlayed = player.playCard(pile.topCard());
+		if (cardPlayed != null) {
+			System.out.println(player + " has discarded " + cardPlayed);
+			pile.addCard(cardPlayed);
 		} else {
 			player.giveCard(pack.takeCard());
+			System.out.println(player + " picked up card");
 		}
-		return card == null;
+		return cardPlayed;
 	}
 }

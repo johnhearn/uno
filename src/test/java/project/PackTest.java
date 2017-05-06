@@ -8,9 +8,9 @@ public class PackTest {
 
 	@Test
 	public void test() {
-		// How many cards? 1->9 * 4 colours + 4 wild
+		// How many cards? 1->9 * 4 colours + 4 wild + 4 reverse
 		Pack pack = new Pack();
-		assertThat(pack.numCards()).isEqualTo(40);
+		assertThat(pack.numCards()).isEqualTo(44);
 	}
 
 }

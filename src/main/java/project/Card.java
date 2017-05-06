@@ -22,6 +22,10 @@ public class Card {
 		return topCard.number == number || topCard.colour == colour;
 	}
 	
+	public int nextStep(int currentStep) {
+		return currentStep;
+	}
+	
 	@Override
 	public boolean equals(Object obj) {
 		return (obj instanceof Card) && number == ((Card)obj).number && colour == ((Card)obj).colour;

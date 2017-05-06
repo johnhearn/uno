@@ -20,12 +20,45 @@ public class CardTest {
 	}
 
 	@Test
+	public void testCardStep() {
+		Card reverseCard = new Card(1, Colour.BLUE);
+		assertThat(reverseCard.nextStep(+1)).isEqualTo(+1);
+		assertThat(reverseCard.nextStep(-1)).isEqualTo(-1);
+	}
+
+	@Test
 	public void testWildCardLogic() {
 		WildCard wildcard = new WildCard();
 		Pack pack = new Pack();
 		while (pack.numCards() > 0) {
 			assertThat(wildcard.canBePlayedOn(pack.takeCard())).isTrue();
 		}
+	}
+
+	@Test
+	public void testWildCardToString() {
+		WildCard wildcard = new WildCard();
+		assertThat(wildcard.toString()).isEqualTo("Wild");
+	}
+
+	@Test
+	public void testReverseCardLogic() {
+		ReverseCard reverseCard = new ReverseCard(Colour.BLUE);
+		assertThat(reverseCard.canBePlayedOn(new Card(3, Colour.BLUE))).isTrue();
+		assertThat(reverseCard.canBePlayedOn(new Card(3, Colour.RED))).isFalse();
+	}
+
+	@Test
+	public void testReverseCardStep() {
+		ReverseCard reverseCard = new ReverseCard(Colour.BLUE);
+		assertThat(reverseCard.nextStep(+1)).isEqualTo(-1);
+		assertThat(reverseCard.nextStep(-1)).isEqualTo(+1);
+	}
+
+	@Test
+	public void testReverseCardToString() {
+		ReverseCard reverseCard = new ReverseCard(Colour.BLUE);
+		assertThat(reverseCard.toString()).isEqualTo("Reverse BLUE");
 	}
 
 }

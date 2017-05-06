@@ -127,4 +127,21 @@ public class GameTest {
 			return null;
 		}
 	}
+
+	@Test
+	public void testNextPlayerLogic() {
+		UnoGame game = new UnoGame(new Player(), new Player(), new Player());
+		assertThat(game.nextPlayer(0, new Card(3, Colour.BLUE))).isEqualTo(1);
+		assertThat(game.nextPlayer(1, new Card(3, Colour.BLUE))).isEqualTo(2);
+		assertThat(game.nextPlayer(2, new Card(3, Colour.BLUE))).isEqualTo(0);
+	}
+
+	@Test
+	public void testNextPlayerReverseLogic() {
+		UnoGame game = new UnoGame(new Player(), new Player(), new Player());
+		assertThat(game.nextPlayer(0, new ReverseCard(Colour.BLUE))).isEqualTo(2);
+		assertThat(game.nextPlayer(2, new Card(3, Colour.BLUE))).isEqualTo(1);
+		assertThat(game.nextPlayer(1, new ReverseCard(Colour.BLUE))).isEqualTo(2);
+		assertThat(game.nextPlayer(2, new Card(3, Colour.BLUE))).isEqualTo(0);
+	}
 }
