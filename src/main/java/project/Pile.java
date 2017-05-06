@@ -9,4 +9,9 @@ public class Pile extends CardHolder {
 	public Card topCard() {
 		return cards.get(cards.size()-1);
 	}
+	
+	@Override
+	public String toString() {
+		return topCard().toString();
+	}
 }

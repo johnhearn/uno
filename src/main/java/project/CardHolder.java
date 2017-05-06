@@ -15,4 +15,8 @@ public class CardHolder {
 		return cards.size();
 	}
 
+	@Override
+	public String toString() {
+		return cards.toString();
+	}
 }
