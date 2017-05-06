@@ -28,18 +28,17 @@ public class UnoGame {
 
 	public Player play() {
 		deal();
-		int passesInThisRound;
-		do {
-			passesInThisRound = 0;
+		while (pack.numCards() > 0) {
 			for (int i = 0; i < players.length; i++) {
 				if (nextTurn(players[i])) {
-					passesInThisRound++;
-				} else if (players[i].numCards() == 0) {
-					return players[i];
+				} else {
+					if (players[i].numCards() == 0) {
+						return players[i];
+					}
 				}
 			}
-		} while (passesInThisRound < players.length);
-		// Everybody passed, stalemate, doesn't often happen in real games
+		}
+		// We ran out of cards, stalemate, doesn't often happen in real games
 		return null;
 	}
 
