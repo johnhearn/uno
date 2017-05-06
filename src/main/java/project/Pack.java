@@ -16,6 +16,9 @@ public class Pack extends CardHolder {
 		for (int i = 0; i < 4; i++) {
 			cards.add(new WildCard());
 		}
+		for (int i = 0; i < 4; i++) {
+			cards.add(new WildFourCard());
+		}
 		for(Colour colour : Colour.values()) {
 			cards.add(new ReverseCard(colour));
 		}

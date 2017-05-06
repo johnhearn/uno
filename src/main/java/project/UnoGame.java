@@ -58,8 +58,13 @@ public class UnoGame {
 			System.out.println(player + " has discarded " + cardPlayed);
 			pile.addCard(cardPlayed);
 			if (cardPlayed instanceof DrawTwoCard) {
+				for (int i = 0; i < 2; i++) {
 				players[position(currentPosition + step)].giveCard(pack.drawCard());
+				}
+			} else if (cardPlayed instanceof WildFourCard) {
+				for (int i = 0; i < 4; i++) {
 				players[position(currentPosition + step)].giveCard(pack.drawCard());
+			}
 			}
 		} else {
 			player.giveCard(pack.drawCard());

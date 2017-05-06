@@ -44,6 +44,30 @@ public class CardTest {
 	}
 
 	@Test
+	public void testWildFourCardLogic() {
+		WildFourCard wildcard = new WildFourCard();
+		Pack pack = new Pack();
+		while (pack.numCards() > 0) {
+			assertThat(wildcard.canBePlayedOn(pack.drawCard())).isTrue();
+		}
+	}
+
+	@Test
+	public void testWildFourCardStep() {
+		WildFourCard wildcard = new WildFourCard();
+		assertThat(wildcard.nextStep(+1)).isEqualTo(+2);
+		assertThat(wildcard.nextStep(-1)).isEqualTo(-2);
+	}
+
+	@Test
+	public void testWildFourCardToString() {
+		WildFourCard wildcard = new WildFourCard();
+		assertThat(wildcard.toString()).isEqualTo("Wild Four");
+		wildcard.colour = Colour.BLUE;
+		assertThat(wildcard.toString()).isEqualTo("Wild Four BLUE");
+	}
+
+	@Test
 	public void testReverseCardLogic() {
 		ReverseCard reverseCard = new ReverseCard(Colour.BLUE);
 		assertThat(reverseCard.canBePlayedOn(new Card(3, Colour.BLUE))).isTrue();

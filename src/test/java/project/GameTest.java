@@ -50,13 +50,6 @@ public class GameTest {
 	}
 
 	@Test
-	public void testSetColourWhenPlayingWildCard() {
-		Player player = new Player();
-		player.giveCard(new WildCard());
-		assertThat(player.playCard(new Card(3, Colour.BLUE)).colour).isNotNull();
-	}
-
-	@Test
 	public void testStalemate() {
 		game = new UnoGame(new MockPlayer(null));
 		Player winner = game.play();
@@ -84,6 +77,11 @@ public class GameTest {
 		public Card playCard(Card topCard) {
 			return card;
 		}
+	}
+
+	@Test
+	public void testNextPlayerWildLogic() {
+		assertThat(game.nextPlayer(new WildCard().withColour(Colour.BLUE))).isEqualTo(1);
 	}
 
 	@Test
@@ -122,6 +120,19 @@ public class GameTest {
 		Player player = new MockPlayer(new DrawTwoCard(Colour.BLUE));
 		game.nextTurn(player);
 		assertThat(players[1].numCards()).isEqualTo(2);
+	}
+
+	@Test
+	public void testNextPlayerWildFourLogic() {
+		assertThat(game.nextPlayer(new WildFourCard().withColour(Colour.BLUE))).isEqualTo(2);
+	}
+
+	@Test
+	public void testNextTurnWildFourLogic() {
+		pile.addCard(new Card(1, Colour.BLUE));
+		Player player = new MockPlayer(new WildFourCard().withColour(Colour.BLUE));
+		game.nextTurn(player);
+		assertThat(players[1].numCards()).isEqualTo(4);
 	}
 
 }

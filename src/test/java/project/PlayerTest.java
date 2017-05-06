@@ -35,4 +35,21 @@ public class PlayerTest {
 		assertThat(player.numCards()).isEqualTo(2);
 	}
 
+	@Test
+	public void testSetColourWhenPlayingWildCard() {
+		Player player = new Player();
+		WildCard wildcard = new WildCard();
+		player.giveCard(wildcard);
+		player.playCard(new Card(3, Colour.BLUE));
+		assertThat(wildcard.isDeclared()).isTrue();
+	}
+
+	@Test
+	public void testSetColourWhenPlayingWildFourCard() {
+		Player player = new Player();
+		WildFourCard wildcard = new WildFourCard();
+		player.giveCard(wildcard);
+		player.playCard(new Card(3, Colour.BLUE));
+		assertThat(wildcard.isDeclared()).isTrue();
+	}
 }
