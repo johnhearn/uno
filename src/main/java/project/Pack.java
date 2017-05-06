@@ -13,6 +13,7 @@ public class Pack extends CardHolder {
 				cards.add(new Card(i, colour));
 			}
 		}
+		shuffle();
 	}
 
 	public Card takeCard() {
