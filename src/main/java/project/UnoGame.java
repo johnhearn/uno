@@ -38,6 +38,10 @@ public class UnoGame {
 				System.out.println(player + " wins");
 				return player;
 			}
+			if (pack.numCards() == 0) {
+				pack.resetPack(pile);
+				pile.addCard(pack.drawCard());
+			}
 		}
 		// We ran out of cards, stalemate, doesn't often happen in real games
 		return null;
@@ -46,10 +50,10 @@ public class UnoGame {
 	protected void deal() {
 		for (int j = 0; j < 7; j++) {
 			for (int i = 0; i < players.length; i++) {
-				players[i].giveCard(pack.drawCard());
+				players[i].giveCard(drawCard());
 			}
 		}
-		pile.addCard(pack.drawCard());
+		pile.addCard(drawCard());
 	}
 
 	protected Card nextTurn(Player player) {
@@ -63,11 +67,21 @@ public class UnoGame {
 				drawCards(4);
 			}
 		} else {
-			player.giveCard(pack.drawCard());
+			player.giveCard(drawCard());
 			System.out.println(player + " picked up card");
 		}
 		nextPlayer(cardPlayed);
 		return cardPlayed;
+	}
+
+	protected Card drawCard() {
+		Card drawCard = pack.drawCard();
+		if (drawCard == null) {
+			pack.resetPack(pile);
+			pile.addCard(pack.drawCard());
+			drawCard = pack.drawCard();
+		}
+		return drawCard;
 	}
 
 	protected int nextPlayer(Card lastCardPlayed) {

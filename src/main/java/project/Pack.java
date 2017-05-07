@@ -19,23 +19,32 @@ public class Pack extends CardHolder {
 		for (int i = 0; i < 4; i++) {
 			cards.add(new WildFourCard());
 		}
-		for(Colour colour : Colour.values()) {
+		for (Colour colour : Colour.values()) {
 			cards.add(new ReverseCard(colour));
 		}
-		for(Colour colour : Colour.values()) {
+		for (Colour colour : Colour.values()) {
 			cards.add(new SkipCard(colour));
 		}
-		for(Colour colour : Colour.values()) {
+		for (Colour colour : Colour.values()) {
 			cards.add(new DrawTwoCard(colour));
 		}
 		shuffle();
 	}
 
 	public Card drawCard() {
+		if (cards.isEmpty()) {
+			return null;
+		}
 		return cards.remove(0);
 	}
 
 	public void shuffle() {
 		Collections.shuffle(cards, new Random());
+	}
+
+	public void resetPack(Pile pile) {
+		this.cards.addAll(pile.cards);
+		pile.cards.clear();
+		this.shuffle();
 	}
 }

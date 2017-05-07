@@ -2,6 +2,7 @@ package project;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Stream;
 
 import org.junit.Test;
@@ -16,7 +17,7 @@ public class GameTest {
 	private Pile pile = new Pile();
 	private Player[] players = new Player[] { new Player(), new Player(), new Player() };
 	private UnoGame game = new UnoGame(pack, pile, players);
-	
+
 	@Test
 	public void testGame() {
 		int numCards = pack.numCards();
@@ -54,6 +55,49 @@ public class GameTest {
 		game = new UnoGame(new MockPlayer(null));
 		Player winner = game.play();
 		assertThat(winner).isNull();
+	}
+
+	private static class MockPack extends Pack {
+		AtomicInteger resetCount = new AtomicInteger(0);
+
+		public MockPack(int numCards) {
+			cards.clear();
+			for (int i = 0; i < numCards; i++) {
+				cards.add(new WildCard().withColour(Colour.BLUE));
+			}
+		}
+
+		@Override
+		public void resetPack(Pile pile) {
+			super.resetPack(pile);
+			resetCount.incrementAndGet();
+		}
+	}
+
+	@Test
+	public void testCardsFromPileAddedToPackWhenPackEmpty() throws Exception {
+		MockPack pack = new MockPack(17);
+		pile = new Pile();
+		players = new Player[] { new Player(), new MockPlayer(null) };
+		game = new UnoGame(pack, pile, players);
+		game.play();
+		assertThat(pack.resetCount.get()).isGreaterThan(0);
+		assertThat(players[0].numCards()).isEqualTo(0);
+	}
+
+	@Test
+	public void testResetPackOnDraw() throws Exception {
+		MockPack pack = new MockPack(50);
+		pile.addCard(pack.drawCard());
+		pile.addCard(pack.drawCard());
+		pile.addCard(pack.drawCard());
+		game = new UnoGame(pack, pile, players);
+		while (pack.numCards() > 0) {
+			assertThat(game.drawCard()).isNotNull();
+		}
+		assertThat(pack.resetCount.get()).isEqualTo(0);
+		assertThat(game.drawCard()).isNotNull();
+		assertThat(pack.resetCount.get()).isEqualTo(1);
 	}
 
 	@Test
