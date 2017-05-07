@@ -58,13 +58,9 @@ public class UnoGame {
 			System.out.println(player + " has discarded " + cardPlayed);
 			pile.addCard(cardPlayed);
 			if (cardPlayed instanceof DrawTwoCard) {
-				for (int i = 0; i < 2; i++) {
-				players[position(currentPosition + step)].giveCard(pack.drawCard());
-				}
+				drawCards(2);
 			} else if (cardPlayed instanceof WildFourCard) {
-				for (int i = 0; i < 4; i++) {
-				players[position(currentPosition + step)].giveCard(pack.drawCard());
-			}
+				drawCards(4);
 			}
 		} else {
 			player.giveCard(pack.drawCard());
@@ -81,6 +77,14 @@ public class UnoGame {
 		currentPosition = position(currentPosition + step);
 		step = (step > 0) ? +1 : -1;
 		return currentPosition;
+	}
+
+	private void drawCards(int numCards) {
+		Player player = players[position(currentPosition + step)];
+		for (int i = 0; i < numCards; i++) {
+			player.giveCard(drawCard());
+		}
+		System.out.println(player + " picks up " + numCards +" cards");
 	}
 
 	private int position(int i) {
