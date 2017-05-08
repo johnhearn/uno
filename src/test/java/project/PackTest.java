@@ -8,9 +8,12 @@ public class PackTest {
 
 	@Test
 	public void testNumberOfCardsInPack() {
-		// How many cards? 1->9 * 4 colours + 4 wild + 4 reverse + 4 skip + 4 draw two + 4 wild four
+		// The deck consists of 108 cards, of which there are 25 of each color (red, green, blue, and yellow), each
+		// color having two of each rank except zero. The ranks in each color are zero to nine, "Skip", "Draw Two", and
+		// "Reverse" (the last three being "action cards"). In addition, the deck contains four each of "Wild" and "Wild
+		// Draw Four" cards.
 		Pack pack = new Pack();
-		assertThat(pack.numCards()).isEqualTo(56);
+		assertThat(pack.numCards()).isEqualTo(108);
 	}
 
 	@Test

@@ -9,6 +9,11 @@ public class Pack extends CardHolder {
 
 	public Pack() {
 		for (Colour colour : Colour.values()) {
+			for (int i = 0; i <= 9; i++) {
+				cards.add(new Card(i, colour));
+			}
+		}
+		for (Colour colour : Colour.values()) {
 			for (int i = 1; i <= 9; i++) {
 				cards.add(new Card(i, colour));
 			}
@@ -21,11 +26,14 @@ public class Pack extends CardHolder {
 		}
 		for (Colour colour : Colour.values()) {
 			cards.add(new ReverseCard(colour));
+			cards.add(new ReverseCard(colour));
 		}
 		for (Colour colour : Colour.values()) {
 			cards.add(new SkipCard(colour));
+			cards.add(new SkipCard(colour));
 		}
 		for (Colour colour : Colour.values()) {
+			cards.add(new DrawTwoCard(colour));
 			cards.add(new DrawTwoCard(colour));
 		}
 		shuffle();
