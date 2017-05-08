@@ -90,6 +90,9 @@ public class CardTest {
 		ReverseCard reverseCard = new ReverseCard(Colour.BLUE);
 		assertThat(reverseCard.canBePlayedOn(new Card(3, Colour.BLUE))).isTrue();
 		assertThat(reverseCard.canBePlayedOn(new Card(3, Colour.RED))).isFalse();
+		assertThat(reverseCard.canBePlayedOn(new SkipCard(Colour.RED))).isFalse();
+		assertThat(reverseCard.canBePlayedOn(new ReverseCard(Colour.RED))).isTrue();
+		assertThat(reverseCard.canBePlayedOn(new DrawTwoCard(Colour.RED))).isFalse();
 	}
 
 	@Test
@@ -116,6 +119,9 @@ public class CardTest {
 		SkipCard skipCard = new SkipCard(Colour.BLUE);
 		assertThat(skipCard.canBePlayedOn(new Card(3, Colour.BLUE))).isTrue();
 		assertThat(skipCard.canBePlayedOn(new Card(3, Colour.RED))).isFalse();
+		assertThat(skipCard.canBePlayedOn(new SkipCard(Colour.RED))).isTrue();
+		assertThat(skipCard.canBePlayedOn(new ReverseCard(Colour.RED))).isFalse();
+		assertThat(skipCard.canBePlayedOn(new DrawTwoCard(Colour.RED))).isFalse();
 	}
 
 	@Test
@@ -142,6 +148,9 @@ public class CardTest {
 		DrawTwoCard drawTwoCard = new DrawTwoCard(Colour.BLUE);
 		assertThat(drawTwoCard.canBePlayedOn(new Card(3, Colour.BLUE))).isTrue();
 		assertThat(drawTwoCard.canBePlayedOn(new Card(3, Colour.RED))).isFalse();
+		assertThat(drawTwoCard.canBePlayedOn(new SkipCard(Colour.RED))).isFalse();
+		assertThat(drawTwoCard.canBePlayedOn(new ReverseCard(Colour.RED))).isFalse();
+		assertThat(drawTwoCard.canBePlayedOn(new DrawTwoCard(Colour.RED))).isTrue();
 	}
 
 	@Test

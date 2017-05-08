@@ -7,11 +7,6 @@ public class ReverseCard extends Card {
 	}
 
 	@Override
-	public boolean canBePlayedOn(Card topCard) {
-		return topCard.colour == colour;
-	}
-
-	@Override
 	public int nextStep(int currentStep) {
 		return -currentStep;
 	}
