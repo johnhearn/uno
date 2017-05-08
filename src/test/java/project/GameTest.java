@@ -43,7 +43,7 @@ public class GameTest {
 	}
 
 	@Test
-	public void testPlayRound() {
+	public void testPlayRound() throws NoMoreCardsException {
 		Player winner = round.playRound();
 		for (Player player : players) {
 			if (player == winner) {
@@ -107,22 +107,27 @@ public class GameTest {
 	}
 
 	@Test
-	public void testResetPackOnDraw() throws Exception {
-		MockPack pack = new MockPack(50);
+	public void testDrawCard() throws NoMoreCardsException {
+		MockPack pack = new MockPack(3);
 		pile.addCard(pack.drawCard());
 		pile.addCard(pack.drawCard());
 		pile.addCard(pack.drawCard());
 		round = new Round(pack, pile, players);
-		while (pack.numCards() > 0) {
-			assertThat(round.drawCard()).isNotNull();
-		}
 		assertThat(pack.resetCount.get()).isEqualTo(0);
 		assertThat(round.drawCard()).isNotNull();
 		assertThat(pack.resetCount.get()).isEqualTo(1);
+		assertThat(round.drawCard()).isNotNull();
+	}
+
+	@Test(expected=NoMoreCardsException.class)
+	public void testDrawCardNoMoreCards() throws NoMoreCardsException {
+		MockPack pack = new MockPack(0);
+		round = new Round(pack, pile, players);
+		round.drawCard();
 	}
 
 	@Test
-	public void testPickupOnPass() {
+	public void testPickupOnPass() throws NoMoreCardsException {
 		int numCards = pack.numCards();
 		pile.addCard(pack.drawCard());
 		MockPlayer player = new MockPlayer(null);
@@ -182,7 +187,7 @@ public class GameTest {
 	}
 
 	@Test
-	public void testNextTurnDrawTwoLogic() {
+	public void testNextTurnDrawTwoLogic() throws NoMoreCardsException {
 		pile.addCard(new Card(1, Colour.BLUE));
 		Player player = new MockPlayer(new DrawTwoCard(Colour.BLUE));
 		round.nextTurn(player);
@@ -195,7 +200,7 @@ public class GameTest {
 	}
 
 	@Test
-	public void testNextTurnWildFourLogic() {
+	public void testNextTurnWildFourLogic() throws NoMoreCardsException {
 		pile.addCard(new Card(1, Colour.BLUE));
 		Player player = new MockPlayer(new WildFourCard().withColour(Colour.BLUE));
 		round.nextTurn(player);
