@@ -9,10 +9,6 @@ public class Round {
 	private int currentPosition = 0;
 	private int step = +1;
 
-	public Round(Player... players) {
-		this(new Pack(), new Pile(), players);
-	}
-
 	protected Round(Pack pack, Pile pile, Player... players) {
 		this.pack = pack;
 		this.pile = pile;
@@ -20,6 +16,15 @@ public class Round {
 	}
 
 	public Player play() {
+		Player winner = playRound();
+		for(Player player : players) {
+			pack.putCards(player);
+		}
+		pack.putCards(pile);
+		return winner;
+	}
+
+	protected Player playRound() {
 		deal();
 		while (pack.numCards() > 0) {
 			Player player = players[currentPosition];
@@ -32,7 +37,7 @@ public class Round {
 				return player;
 			}
 			if (pack.numCards() == 0) {
-				pack.resetPack(pile);
+				pack.putCards(pile);
 				pile.addCard(pack.drawCard());
 			}
 		}
@@ -41,9 +46,6 @@ public class Round {
 	}
 
 	protected void deal() {
-		for (int i = 0; i < players.length; i++) {
-			players[i].newGame();
-		}
 		for (int j = 0; j < 7; j++) {
 			for (int i = 0; i < players.length; i++) {
 				players[i].giveCard(drawCard());
@@ -73,7 +75,8 @@ public class Round {
 	protected Card drawCard() {
 		Card drawCard = pack.drawCard();
 		if (drawCard == null) {
-			pack.resetPack(pile);
+			pack.putCards(pile);
+			pack.shuffle();
 			pile.addCard(pack.drawCard());
 			drawCard = pack.drawCard();
 		}

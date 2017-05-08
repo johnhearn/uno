@@ -19,9 +19,32 @@ public class GameTest {
 	private Round round = new Round(pack, pile, players);
 
 	@Test
-	public void testRound() {
+	public void testGame() {
+		Game game = new Game(players);
+		Player winner = game.play();
+		for (Player player : players) {
+			if (player == winner) {
+				assertThat(player.score()).isGreaterThanOrEqualTo(500);
+			} else {
+				assertThat(player.score()).isLessThan(500);
+			}
+		}
+	}
+
+	@Test
+	public void testPlay() {
 		int numCards = pack.numCards();
-		Player winner = round.play();
+		round.play();
+		for (Player player : players) {
+			assertThat(player.numCards()).isEqualTo(0);
+		}
+		assertThat(pile.numCards()).isEqualTo(0);
+		assertThat(pack.numCards()).isEqualTo(numCards);
+	}
+
+	@Test
+	public void testPlayRound() {
+		Player winner = round.playRound();
 		for (Player player : players) {
 			if (player == winner) {
 				assertThat(player.numCards()).isEqualTo(0);
@@ -29,7 +52,6 @@ public class GameTest {
 				assertThat(player.numCards()).isNotEqualTo(0);
 			}
 		}
-		assertThat(countTotalCards(pack, pile, players)).isEqualTo(numCards);
 	}
 
 	@Test
@@ -45,14 +67,13 @@ public class GameTest {
 	}
 
 	private int countTotalCards(Pack pack, Pile pile, Player... players) {
-		int finalCardCount = Stream.concat(Stream.of(pack, pile), Stream.of(players))
-				.mapToInt((ch) -> ch.numCards()).sum();
+		int finalCardCount = Stream.concat(Stream.of(pack, pile), Stream.of(players)).mapToInt((ch) -> ch.numCards()).sum();
 		return finalCardCount;
 	}
 
 	@Test
 	public void testStalemate() {
-		round = new Round(new MockPlayer(null));
+		round = new Round(pack, pile, new MockPlayer(null));
 		Player winner = round.play();
 		assertThat(winner).isNull();
 	}
@@ -68,8 +89,8 @@ public class GameTest {
 		}
 
 		@Override
-		public void resetPack(Pile pile) {
-			super.resetPack(pile);
+		public void putCards(CardHolder cards) {
+			super.putCards(cards);
 			resetCount.incrementAndGet();
 		}
 	}
@@ -114,9 +135,11 @@ public class GameTest {
 
 	private static class MockPlayer extends Player {
 		final Card card;
+
 		public MockPlayer(Card card) {
 			this.card = card;
 		}
+
 		@Override
 		public Card playCard(Card topCard) {
 			return card;

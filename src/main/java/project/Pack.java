@@ -42,9 +42,8 @@ public class Pack extends CardHolder {
 		Collections.shuffle(cards, new Random());
 	}
 
-	public void resetPack(Pile pile) {
-		this.cards.addAll(pile.cards);
-		pile.cards.clear();
-		this.shuffle();
+	public void putCards(CardHolder cards) {
+		this.cards.addAll(cards.cards);
+		cards.cards.clear();
 	}
 }

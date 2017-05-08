@@ -14,7 +14,7 @@ public class PackTest {
 	}
 
 	@Test
-	public void testResetPack() throws Exception {
+	public void testPutCards() throws Exception {
 		Pack pack = new Pack();
 		int numCardsInPack = pack.numCards();
 
@@ -23,7 +23,7 @@ public class PackTest {
 		pile.addCard(new WildCard());
 		pile.addCard(new WildCard());
 
-		pack.resetPack(pile);
+		pack.putCards(pile);
 
 		assertThat(pack.numCards()).isEqualTo(numCardsInPack + 3);
 		assertThat(pile.numCards()).isEqualTo(0);
