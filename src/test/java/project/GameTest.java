@@ -16,12 +16,12 @@ public class GameTest {
 	private Pack pack = new Pack();
 	private Pile pile = new Pile();
 	private Player[] players = new Player[] { new Player(), new Player(), new Player() };
-	private UnoGame game = new UnoGame(pack, pile, players);
+	private Round round = new Round(pack, pile, players);
 
 	@Test
-	public void testGame() {
+	public void testRound() {
 		int numCards = pack.numCards();
-		Player winner = game.play();
+		Player winner = round.play();
 		for (Player player : players) {
 			if (player == winner) {
 				assertThat(player.numCards()).isEqualTo(0);
@@ -35,7 +35,7 @@ public class GameTest {
 	@Test
 	public void testDeal() {
 		int numCards = pack.numCards();
-		game.deal();
+		round.deal();
 		for (Player player : players) {
 			assertThat(player.numCards()).isEqualTo(7);
 		}
@@ -52,8 +52,8 @@ public class GameTest {
 
 	@Test
 	public void testStalemate() {
-		game = new UnoGame(new MockPlayer(null));
-		Player winner = game.play();
+		round = new Round(new MockPlayer(null));
+		Player winner = round.play();
 		assertThat(winner).isNull();
 	}
 
@@ -79,8 +79,8 @@ public class GameTest {
 		MockPack pack = new MockPack(17);
 		pile = new Pile();
 		players = new Player[] { new Player(), new MockPlayer(null) };
-		game = new UnoGame(pack, pile, players);
-		game.play();
+		round = new Round(pack, pile, players);
+		round.play();
 		assertThat(pack.resetCount.get()).isGreaterThan(0);
 		assertThat(players[0].numCards()).isEqualTo(0);
 	}
@@ -91,12 +91,12 @@ public class GameTest {
 		pile.addCard(pack.drawCard());
 		pile.addCard(pack.drawCard());
 		pile.addCard(pack.drawCard());
-		game = new UnoGame(pack, pile, players);
+		round = new Round(pack, pile, players);
 		while (pack.numCards() > 0) {
-			assertThat(game.drawCard()).isNotNull();
+			assertThat(round.drawCard()).isNotNull();
 		}
 		assertThat(pack.resetCount.get()).isEqualTo(0);
-		assertThat(game.drawCard()).isNotNull();
+		assertThat(round.drawCard()).isNotNull();
 		assertThat(pack.resetCount.get()).isEqualTo(1);
 	}
 
@@ -105,8 +105,8 @@ public class GameTest {
 		int numCards = pack.numCards();
 		pile.addCard(pack.drawCard());
 		MockPlayer player = new MockPlayer(null);
-		game = new UnoGame(pack, pile, player);
-		game.nextTurn(player);
+		round = new Round(pack, pile, player);
+		round.nextTurn(player);
 		assertThat(pack.numCards()).isEqualTo(numCards - 2);
 		assertThat(pile.numCards()).isEqualTo(1);
 		assertThat(player.numCards()).isEqualTo(1);
@@ -125,63 +125,63 @@ public class GameTest {
 
 	@Test
 	public void testNextPlayerWildLogic() {
-		assertThat(game.nextPlayer(new WildCard().withColour(Colour.BLUE))).isEqualTo(1);
+		assertThat(round.nextPlayer(new WildCard().withColour(Colour.BLUE))).isEqualTo(1);
 	}
 
 	@Test
 	public void testNextPlayerLogic() {
-		assertThat(game.nextPlayer(new Card(3, Colour.BLUE))).isEqualTo(1);
-		assertThat(game.nextPlayer(new Card(3, Colour.BLUE))).isEqualTo(2);
-		assertThat(game.nextPlayer(new Card(3, Colour.BLUE))).isEqualTo(0);
+		assertThat(round.nextPlayer(new Card(3, Colour.BLUE))).isEqualTo(1);
+		assertThat(round.nextPlayer(new Card(3, Colour.BLUE))).isEqualTo(2);
+		assertThat(round.nextPlayer(new Card(3, Colour.BLUE))).isEqualTo(0);
 	}
 
 	@Test
 	public void testNextPlayerReverseLogic() {
-		assertThat(game.nextPlayer(new ReverseCard(Colour.BLUE))).isEqualTo(2);
-		assertThat(game.nextPlayer(new Card(3, Colour.BLUE))).isEqualTo(1);
-		assertThat(game.nextPlayer(new ReverseCard(Colour.BLUE))).isEqualTo(2);
-		assertThat(game.nextPlayer(new Card(3, Colour.BLUE))).isEqualTo(0);
+		assertThat(round.nextPlayer(new ReverseCard(Colour.BLUE))).isEqualTo(2);
+		assertThat(round.nextPlayer(new Card(3, Colour.BLUE))).isEqualTo(1);
+		assertThat(round.nextPlayer(new ReverseCard(Colour.BLUE))).isEqualTo(2);
+		assertThat(round.nextPlayer(new Card(3, Colour.BLUE))).isEqualTo(0);
 	}
 
 	@Test
 	public void testNextPlayerSkipLogic() {
-		assertThat(game.nextPlayer(new SkipCard(Colour.BLUE))).isEqualTo(2);
-		assertThat(game.nextPlayer(new Card(3, Colour.BLUE))).isEqualTo(0);
-		assertThat(game.nextPlayer(new Card(4, Colour.BLUE))).isEqualTo(1);
-		assertThat(game.nextPlayer(new ReverseCard(Colour.BLUE))).isEqualTo(0);
-		assertThat(game.nextPlayer(new SkipCard(Colour.BLUE))).isEqualTo(1);
-		assertThat(game.nextPlayer(new Card(3, Colour.BLUE))).isEqualTo(0);
+		assertThat(round.nextPlayer(new SkipCard(Colour.BLUE))).isEqualTo(2);
+		assertThat(round.nextPlayer(new Card(3, Colour.BLUE))).isEqualTo(0);
+		assertThat(round.nextPlayer(new Card(4, Colour.BLUE))).isEqualTo(1);
+		assertThat(round.nextPlayer(new ReverseCard(Colour.BLUE))).isEqualTo(0);
+		assertThat(round.nextPlayer(new SkipCard(Colour.BLUE))).isEqualTo(1);
+		assertThat(round.nextPlayer(new Card(3, Colour.BLUE))).isEqualTo(0);
 	}
 
 	@Test
 	public void testNextPlayerDrawTwoLogic() {
-		assertThat(game.nextPlayer(new DrawTwoCard(Colour.BLUE))).isEqualTo(2);
+		assertThat(round.nextPlayer(new DrawTwoCard(Colour.BLUE))).isEqualTo(2);
 	}
 
 	@Test
 	public void testNextTurnDrawTwoLogic() {
 		pile.addCard(new Card(1, Colour.BLUE));
 		Player player = new MockPlayer(new DrawTwoCard(Colour.BLUE));
-		game.nextTurn(player);
+		round.nextTurn(player);
 		assertThat(players[1].numCards()).isEqualTo(2);
 	}
 
 	@Test
 	public void testNextPlayerWildFourLogic() {
-		assertThat(game.nextPlayer(new WildFourCard().withColour(Colour.BLUE))).isEqualTo(2);
+		assertThat(round.nextPlayer(new WildFourCard().withColour(Colour.BLUE))).isEqualTo(2);
 	}
 
 	@Test
 	public void testNextTurnWildFourLogic() {
 		pile.addCard(new Card(1, Colour.BLUE));
 		Player player = new MockPlayer(new WildFourCard().withColour(Colour.BLUE));
-		game.nextTurn(player);
+		round.nextTurn(player);
 		assertThat(players[1].numCards()).isEqualTo(4);
 	}
 
 	@Test
 	public void testAddUpScores() {
-		Player winner = game.play();
+		Player winner = round.play();
 		for (Player player : players) {
 			if (player == winner) {
 				assertThat(player.score()).isGreaterThan(0);

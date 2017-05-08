@@ -1,6 +1,6 @@
 package project;
 
-public class UnoGame {
+public class Round {
 
 	private final Pack pack;
 	private final Pile pile;
@@ -9,7 +9,7 @@ public class UnoGame {
 	private int currentPosition = 0;
 	private int step = +1;
 
-	protected UnoGame(int players) {
+	protected Round(int players) {
 		super();
 		this.pack = new Pack();
 		this.pile = new Pile();
@@ -19,11 +19,11 @@ public class UnoGame {
 		}
 	}
 
-	public UnoGame(Player... players) {
+	public Round(Player... players) {
 		this(new Pack(), new Pile(), players);
 	}
 
-	protected UnoGame(Pack pack, Pile pile, Player... players) {
+	protected Round(Pack pack, Pile pile, Player... players) {
 		this.pack = pack;
 		this.pile = pile;
 		this.players = players;
@@ -35,7 +35,6 @@ public class UnoGame {
 			Player player = players[currentPosition];
 			nextTurn(player);
 			if (player.numCards() == 0) {
-				System.out.println(player + " wins");
 				for(Player p : players) {
 					player.addPlayersCardsToScore(p);
 				}
@@ -52,6 +51,9 @@ public class UnoGame {
 	}
 
 	protected void deal() {
+		for (int i = 0; i < players.length; i++) {
+			players[i].newGame();
+		}
 		for (int j = 0; j < 7; j++) {
 			for (int i = 0; i < players.length; i++) {
 				players[i].giveCard(drawCard());
@@ -63,7 +65,7 @@ public class UnoGame {
 	protected Card nextTurn(Player player) {
 		Card cardPlayed = player.playCard(pile.topCard());
 		if (cardPlayed != null) {
-			System.out.println(player + " has discarded " + cardPlayed);
+			log(player + " has discarded " + cardPlayed);
 			pile.addCard(cardPlayed);
 			if (cardPlayed instanceof DrawTwoCard) {
 				drawCards(2);
@@ -72,7 +74,7 @@ public class UnoGame {
 			}
 		} else {
 			player.giveCard(drawCard());
-			System.out.println(player + " picked up card");
+			log(player + " picked up card");
 		}
 		nextPlayer(cardPlayed);
 		return cardPlayed;
@@ -102,10 +104,14 @@ public class UnoGame {
 		for (int i = 0; i < numCards; i++) {
 			player.giveCard(drawCard());
 		}
-		System.out.println(player + " picks up " + numCards +" cards");
+		log(player + " picks up " + numCards +" cards");
 	}
 
 	private int position(int i) {
 		return (i + players.length) % players.length;
+	}
+	
+	private void log(String line) {
+		//System.out.println(line);
 	}
 }
