@@ -9,16 +9,6 @@ public class Round {
 	private int currentPosition = 0;
 	private int step = +1;
 
-	protected Round(int players) {
-		super();
-		this.pack = new Pack();
-		this.pile = new Pile();
-		this.players = new Player[players];
-		for (int i = 0; i < players; i++) {
-			this.players[i] = new Player();
-		}
-	}
-
 	public Round(Player... players) {
 		this(new Pack(), new Pile(), players);
 	}
