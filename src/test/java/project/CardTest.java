@@ -27,12 +27,24 @@ public class CardTest {
 	}
 
 	@Test
+	public void testCardPoints() {
+		Card card = new Card(5, Colour.BLUE);
+		assertThat(card.points()).isEqualTo(5);
+	}
+
+	@Test
 	public void testWildCardLogic() {
 		WildCard wildcard = new WildCard();
 		Pack pack = new Pack();
 		while (pack.numCards() > 0) {
 			assertThat(wildcard.canBePlayedOn(pack.drawCard())).isTrue();
 		}
+	}
+
+	@Test
+	public void testWildCardPoints() {
+		WildCard wildCard = new WildCard();
+		assertThat(wildCard.points()).isEqualTo(50);
 	}
 
 	@Test
@@ -60,6 +72,12 @@ public class CardTest {
 	}
 
 	@Test
+	public void testWildFourCardPoints() {
+		WildFourCard wildFourCard = new WildFourCard();
+		assertThat(wildFourCard.points()).isEqualTo(50);
+	}
+
+	@Test
 	public void testWildFourCardToString() {
 		WildFourCard wildcard = new WildFourCard();
 		assertThat(wildcard.toString()).isEqualTo("Wild Four");
@@ -79,6 +97,12 @@ public class CardTest {
 		ReverseCard reverseCard = new ReverseCard(Colour.BLUE);
 		assertThat(reverseCard.nextStep(+1)).isEqualTo(-1);
 		assertThat(reverseCard.nextStep(-1)).isEqualTo(+1);
+	}
+
+	@Test
+	public void testReverseCardPoints() {
+		ReverseCard reverseCard = new ReverseCard(Colour.BLUE);
+		assertThat(reverseCard.points()).isEqualTo(20);
 	}
 
 	@Test
@@ -102,6 +126,12 @@ public class CardTest {
 	}
 
 	@Test
+	public void testSkipCardPoints() {
+		SkipCard skipCard = new SkipCard(Colour.BLUE);
+		assertThat(skipCard.points()).isEqualTo(20);
+	}
+
+	@Test
 	public void testSkipCardToString() {
 		SkipCard skipCard = new SkipCard(Colour.BLUE);
 		assertThat(skipCard.toString()).isEqualTo("Skip BLUE");
@@ -119,6 +149,12 @@ public class CardTest {
 		DrawTwoCard drawTwoCard = new DrawTwoCard(Colour.BLUE);
 		assertThat(drawTwoCard.nextStep(+1)).isEqualTo(+2);
 		assertThat(drawTwoCard.nextStep(-1)).isEqualTo(-2);
+	}
+
+	@Test
+	public void testDrawTwoCardPoints() {
+		DrawTwoCard drawTwoCard = new DrawTwoCard(Colour.BLUE);
+		assertThat(drawTwoCard.points()).isEqualTo(20);
 	}
 
 	@Test

@@ -36,6 +36,10 @@ public class UnoGame {
 			nextTurn(player);
 			if (player.numCards() == 0) {
 				System.out.println(player + " wins");
+				for(Player p : players) {
+					player.addPlayersCardsToScore(p);
+				}
+				log(player + " wins");
 				return player;
 			}
 			if (pack.numCards() == 0) {

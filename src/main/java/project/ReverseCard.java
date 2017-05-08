@@ -20,4 +20,9 @@ public class ReverseCard extends Card {
 	public String toString() {
 		return "Reverse " + colour.name();
 	}
+	
+	@Override
+	public int points() {
+		return 20;
+	}
 }

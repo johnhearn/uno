@@ -20,4 +20,9 @@ public class SkipCard extends Card {
 	public String toString() {
 		return "Skip " + colour.name();
 	}
+	
+	@Override
+	public int points() {
+		return 20;
+	}
 }

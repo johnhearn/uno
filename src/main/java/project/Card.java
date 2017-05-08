@@ -35,4 +35,8 @@ public class Card {
 	public String toString() {
 		return colour.name() + " " + number;
 	}
+
+	public int points() {
+		return number;
+	}
 }

@@ -179,4 +179,15 @@ public class GameTest {
 		assertThat(players[1].numCards()).isEqualTo(4);
 	}
 
+	@Test
+	public void testAddUpScores() {
+		Player winner = game.play();
+		for (Player player : players) {
+			if (player == winner) {
+				assertThat(player.score()).isGreaterThan(0);
+			} else {
+				assertThat(player.score()).isEqualTo(0);
+			}
+		}
+	}
 }

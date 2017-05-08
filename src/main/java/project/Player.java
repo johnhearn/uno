@@ -8,6 +8,7 @@ public class Player extends CardHolder {
 
 	private static int counter;
 	private String name;
+	private int score;
 
 	public Player() {
 		this("Player " + counter);
@@ -40,5 +41,17 @@ public class Player extends CardHolder {
 	@Override
 	public String toString() {
 		return name + ((cards.size() > 0) ? " " + super.toString() : "");
+	}
+
+	private int sumOfHand() {
+		return cards.stream().mapToInt((c) -> c.points()).sum();
+	}
+
+	public void addPlayersCardsToScore(Player player) {
+		score += player.sumOfHand();
+	}
+	
+	public int score() {
+		return score;
 	}
 }

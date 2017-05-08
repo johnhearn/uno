@@ -24,4 +24,9 @@ public class WildCard extends Card {
 	public boolean isDeclared() {
 		return colour != null;
 	}
+	
+	@Override
+	public int points() {
+		return 50;
+	}
 }
