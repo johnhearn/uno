@@ -2,11 +2,12 @@ package project;
 
 public class Game {
 	
-	private final Pack pack = new Pack();
+	private final Pack pack;
 	private final Pile pile = new Pile();
 	private final Player[] players;
 
-	public Game(Player... players) {
+	public Game(Pack pack, Player... players) {
+		this.pack = pack;
 		this.players = players;
 	}
 

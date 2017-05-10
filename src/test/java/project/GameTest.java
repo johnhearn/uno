@@ -20,7 +20,7 @@ public class GameTest {
 
 	@Test
 	public void testGame() {
-		Game game = new Game(players);
+		Game game = new Game(pack, players);
 		Player winner = game.play();
 		for (Player player : players) {
 			if (player == winner) {
