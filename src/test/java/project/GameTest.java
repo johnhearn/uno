@@ -2,10 +2,15 @@ package project;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Stream;
 
 import org.junit.Test;
+import org.mockito.AdditionalAnswers;
 
 import project.Card.Colour;
 
@@ -56,13 +61,16 @@ public class GameTest {
 
 	@Test
 	public void testDeal() {
+		Pack pack = mock(Pack.class, AdditionalAnswers.delegatesTo(this.pack));
 		int numCards = pack.numCards();
+		round = new Round(pack, pile, players);
 		round.deal();
 		for (Player player : players) {
 			assertThat(player.numCards()).isEqualTo(7);
 		}
 		assertThat(pile.numCards()).isEqualTo(1);
 		assertThat(pack.numCards()).isEqualTo(numCards - 7 * players.length - 1);
+		verify(pack, times(1)).shuffle();
 		assertThat(countTotalCards(pack, pile, players)).isEqualTo(numCards);
 	}
 

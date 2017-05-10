@@ -53,6 +53,7 @@ public class Round {
 	}
 
 	protected void deal() {
+		pack.shuffle();
 		for (int j = 0; j < 7; j++) {
 			for (int i = 0; i < players.length; i++) {
 				players[i].giveCard(pack.drawCard());

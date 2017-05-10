@@ -36,7 +36,6 @@ public class Pack extends CardHolder {
 			cards.add(new DrawTwoCard(colour));
 			cards.add(new DrawTwoCard(colour));
 		}
-		shuffle();
 	}
 
 	public Card drawCard() {
