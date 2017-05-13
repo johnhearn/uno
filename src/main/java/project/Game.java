@@ -15,8 +15,7 @@ public class Game {
 		while (true) {
 			Round game = new Round(pack, pile, players);
 			Player winner = game.play();
-			System.out.println(winner +" "+winner.score());
-			if (winner.score() > 500) {
+			if (winner != null && winner.getCurrentScore() > 500) {
 				return winner;
 			}
 		}
