@@ -11,7 +11,7 @@ import project.Card.Colour;
 
 public class PlayerTest {
 	
-	private Player player = new Player();
+	private Player player = new Player("Test Player");
 
 	@Before
 	public void setupTestHand() {
@@ -63,5 +63,16 @@ public class PlayerTest {
 		assertThat(iter.next()).isEqualTo(new NumberCard(6, Colour.RED));
 		assertThat(iter.next()).isEqualTo(new NumberCard(7, Colour.RED));
 		assertThat(iter.next()).isEqualTo(new NumberCard(5, Colour.GREEN));
+	}
+
+	@Test
+	public void testToStringWithNoCards() {
+		player = new Player("Test Player");
+		assertThat(player.toString()).isEqualTo("Test Player");
+	}
+
+	@Test
+	public void testToStringWithHand() {
+		assertThat(player.toString()).isEqualTo("Test Player [RED 6, RED 7, GREEN 5]");
 	}
 }
