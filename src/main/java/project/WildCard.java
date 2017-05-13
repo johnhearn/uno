@@ -3,9 +3,9 @@ package project;
 public class WildCard extends Card {
 
 	public WildCard() {
-		super(-1, null);
+		super(null);
 	}
-	
+
 	@Override
 	public boolean canBePlayedOn(Card topCard) {
 		return true;
@@ -28,5 +28,16 @@ public class WildCard extends Card {
 	@Override
 	public int points() {
 		return 50;
+	}
+	
+	@Override
+	public boolean equals(Object obj) {
+		// Ignore colour
+		return obj != null && getClass() == obj.getClass();
+	}
+	
+	@Override
+	public int hashCode() {
+		return getClass().hashCode();
 	}
 }

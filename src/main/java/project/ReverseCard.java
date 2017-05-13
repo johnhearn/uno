@@ -1,9 +1,12 @@
 package project;
 
+import project.Card.Immutable;
+
+@Immutable
 public class ReverseCard extends Card {
 	
 	public ReverseCard(Colour colour) {
-		super(-2, colour);
+		super(colour);
 	}
 
 	@Override

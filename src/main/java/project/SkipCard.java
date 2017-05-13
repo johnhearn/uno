@@ -1,9 +1,12 @@
 package project;
 
+import project.Card.Immutable;
+
+@Immutable
 public class SkipCard extends Card {
 
 	public SkipCard(Colour colour) {
-		super(-3, colour);
+		super(colour);
 	}
 
 	@Override

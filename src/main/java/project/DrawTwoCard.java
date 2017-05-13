@@ -1,9 +1,12 @@
 package project;
 
+import project.Card.Immutable;
+
+@Immutable
 public class DrawTwoCard extends Card {
 
 	public DrawTwoCard(Colour colour) {
-		super(-4, colour);
+		super(colour);
 	}
 
 	@Override

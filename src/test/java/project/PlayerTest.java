@@ -15,50 +15,53 @@ public class PlayerTest {
 
 	@Before
 	public void setupTestHand() {
-		player.giveCard(new Card(6, Colour.RED));
-		player.giveCard(new Card(5, Colour.GREEN));
+		player.giveCard(new NumberCard(6, Colour.RED));
+		player.giveCard(new NumberCard(7, Colour.RED));
+		player.giveCard(new NumberCard(5, Colour.GREEN));
 	}
 
 	@Test
 	public void testPlayerPlaysPlayable() {
-		Card topCard = new Card(5, Colour.BLUE);
+		Card topCard = new NumberCard(5, Colour.BLUE);
 
+		int numCards = player.numCards();
 		Card playCard = player.playCard(topCard);
-		assertThat(playCard).isEqualTo(new Card(5, Colour.GREEN));
-		assertThat(player.numCards()).isEqualTo(1);
+		assertThat(playCard).isEqualTo(new NumberCard(5, Colour.GREEN));
+		assertThat(player.numCards()).isEqualTo(numCards - 1);
 	}
 
 	@Test
 	public void testPlayerHasNoPlayableCard() {
-		Card topCard = new Card(4, Colour.YELLOW);
+		Card topCard = new NumberCard(4, Colour.YELLOW);
 
+		int numCards = player.numCards();
 		Card playCard = player.playCard(topCard);
 		assertThat(playCard).isNull();
-		assertThat(player.numCards()).isEqualTo(2);
+		assertThat(player.numCards()).isEqualTo(numCards);
 	}
 
 	@Test
 	public void testSetColourWhenPlayingWildCard() {
-		Player player = new Player();
-		WildCard wildcard = new WildCard();
-		player.giveCard(wildcard);
-		player.playCard(new Card(3, Colour.BLUE));
-		assertThat(wildcard.isDeclared()).isTrue();
+		testSetColourWhenPlayingWildCard(new WildCard());
 	}
 
 	@Test
 	public void testSetColourWhenPlayingWildFourCard() {
-		Player player = new Player();
-		WildFourCard wildcard = new WildFourCard();
+		testSetColourWhenPlayingWildCard(new WildFourCard());
+	}
+
+	private void testSetColourWhenPlayingWildCard(WildCard wildcard) {
 		player.giveCard(wildcard);
-		player.playCard(new Card(3, Colour.BLUE));
+		player.playCard(new NumberCard(3, Colour.BLUE));
 		assertThat(wildcard.isDeclared()).isTrue();
+		assertThat(wildcard.colour).isEqualTo(Colour.RED); // Two RED cards in hand
 	}
 
 	@Test
 	public void testIterateOverHand() {
 		Iterator<Card> iter = player.iterator();
-		assertThat(iter.next()).isEqualTo(new Card(6, Colour.RED));
-		assertThat(iter.next()).isEqualTo(new Card(5, Colour.GREEN));
+		assertThat(iter.next()).isEqualTo(new NumberCard(6, Colour.RED));
+		assertThat(iter.next()).isEqualTo(new NumberCard(7, Colour.RED));
+		assertThat(iter.next()).isEqualTo(new NumberCard(5, Colour.GREEN));
 	}
 }

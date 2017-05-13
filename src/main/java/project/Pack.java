@@ -10,12 +10,12 @@ public class Pack extends CardHolder {
 	public Pack() {
 		for (Colour colour : Colour.values()) {
 			for (int i = 0; i <= 9; i++) {
-				cards.add(new Card(i, colour));
+				cards.add(new NumberCard(i, colour));
 			}
 		}
 		for (Colour colour : Colour.values()) {
 			for (int i = 1; i <= 9; i++) {
-				cards.add(new Card(i, colour));
+				cards.add(new NumberCard(i, colour));
 			}
 		}
 		for (int i = 0; i < 4; i++) {

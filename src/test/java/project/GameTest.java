@@ -6,6 +6,7 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
+import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Stream;
 
@@ -157,6 +158,15 @@ public class GameTest {
 		public Card playCard(Card topCard) {
 			return card;
 		}
+
+		protected Card chooseCard(List<Card> playableCards) {
+			if (playableCards.size() > 0) {
+				// most basic strategy is to play any playable card
+				Card card = playableCards.get(0);
+				return card;
+			}
+			return null;
+		}
 	}
 
 	@Test
@@ -166,27 +176,27 @@ public class GameTest {
 
 	@Test
 	public void testNextPlayerLogic() {
-		assertThat(round.nextPlayer(new Card(3, Colour.BLUE))).isEqualTo(1);
-		assertThat(round.nextPlayer(new Card(3, Colour.BLUE))).isEqualTo(2);
-		assertThat(round.nextPlayer(new Card(3, Colour.BLUE))).isEqualTo(0);
+		assertThat(round.nextPlayer(new NumberCard(3, Colour.BLUE))).isEqualTo(1);
+		assertThat(round.nextPlayer(new NumberCard(3, Colour.BLUE))).isEqualTo(2);
+		assertThat(round.nextPlayer(new NumberCard(3, Colour.BLUE))).isEqualTo(0);
 	}
 
 	@Test
 	public void testNextPlayerReverseLogic() {
 		assertThat(round.nextPlayer(new ReverseCard(Colour.BLUE))).isEqualTo(2);
-		assertThat(round.nextPlayer(new Card(3, Colour.BLUE))).isEqualTo(1);
+		assertThat(round.nextPlayer(new NumberCard(3, Colour.BLUE))).isEqualTo(1);
 		assertThat(round.nextPlayer(new ReverseCard(Colour.BLUE))).isEqualTo(2);
-		assertThat(round.nextPlayer(new Card(3, Colour.BLUE))).isEqualTo(0);
+		assertThat(round.nextPlayer(new NumberCard(3, Colour.BLUE))).isEqualTo(0);
 	}
 
 	@Test
 	public void testNextPlayerSkipLogic() {
 		assertThat(round.nextPlayer(new SkipCard(Colour.BLUE))).isEqualTo(2);
-		assertThat(round.nextPlayer(new Card(3, Colour.BLUE))).isEqualTo(0);
-		assertThat(round.nextPlayer(new Card(4, Colour.BLUE))).isEqualTo(1);
+		assertThat(round.nextPlayer(new NumberCard(3, Colour.BLUE))).isEqualTo(0);
+		assertThat(round.nextPlayer(new NumberCard(4, Colour.BLUE))).isEqualTo(1);
 		assertThat(round.nextPlayer(new ReverseCard(Colour.BLUE))).isEqualTo(0);
 		assertThat(round.nextPlayer(new SkipCard(Colour.BLUE))).isEqualTo(1);
-		assertThat(round.nextPlayer(new Card(3, Colour.BLUE))).isEqualTo(0);
+		assertThat(round.nextPlayer(new NumberCard(3, Colour.BLUE))).isEqualTo(0);
 	}
 
 	@Test
@@ -196,7 +206,7 @@ public class GameTest {
 
 	@Test
 	public void testNextTurnDrawTwoLogic() throws NoMoreCardsException {
-		pile.addCard(new Card(1, Colour.BLUE));
+		pile.addCard(new NumberCard(1, Colour.BLUE));
 		Player player = new MockPlayer(new DrawTwoCard(Colour.BLUE));
 		round.nextTurn(player);
 		assertThat(players[1].numCards()).isEqualTo(2);
@@ -209,7 +219,7 @@ public class GameTest {
 
 	@Test
 	public void testNextTurnWildFourLogic() throws NoMoreCardsException {
-		pile.addCard(new Card(1, Colour.BLUE));
+		pile.addCard(new NumberCard(1, Colour.BLUE));
 		Player player = new MockPlayer(new WildFourCard().withColour(Colour.BLUE));
 		round.nextTurn(player);
 		assertThat(players[1].numCards()).isEqualTo(4);

@@ -12,19 +12,19 @@ public class PileTest {
 	
 	@Test
 	public void testPileTopCard() {
-		pile.addCard(new Card(2, Colour.GREEN));
-		assertThat(pile.topCard()).isEqualTo(new Card(2, Colour.GREEN));
-		pile.addCard(new Card(2, Colour.RED));
-		assertThat(pile.topCard()).isEqualTo(new Card(2, Colour.RED));
-		pile.addCard(new Card(2, Colour.BLUE));
-		assertThat(pile.topCard()).isEqualTo(new Card(2, Colour.BLUE));
+		pile.addCard(new NumberCard(2, Colour.GREEN));
+		assertThat(pile.topCard()).isEqualTo(new NumberCard(2, Colour.GREEN));
+		pile.addCard(new NumberCard(2, Colour.RED));
+		assertThat(pile.topCard()).isEqualTo(new NumberCard(2, Colour.RED));
+		pile.addCard(new NumberCard(2, Colour.BLUE));
+		assertThat(pile.topCard()).isEqualTo(new NumberCard(2, Colour.BLUE));
 	}
 
 	@Test(expected = RuntimeException.class)
 	public void testPileDoesNotAcceptInvalidCard() {
-		pile.addCard(new Card(1, Colour.GREEN));
-		pile.addCard(new Card(2, Colour.GREEN));
-		pile.addCard(new Card(3, Colour.BLUE));
+		pile.addCard(new NumberCard(1, Colour.GREEN));
+		pile.addCard(new NumberCard(2, Colour.GREEN));
+		pile.addCard(new NumberCard(3, Colour.BLUE));
 	}
 
 

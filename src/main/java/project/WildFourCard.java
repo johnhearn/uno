@@ -2,10 +2,6 @@ package project;
 
 public class WildFourCard extends WildCard {
 
-	public WildFourCard() {
-		super();
-	}
-	
 	@Override
 	public int nextStep(int currentStep) {
 		return currentStep*2;
