@@ -1,6 +1,7 @@
 package project;
 
-import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
 
 import project.Card.Colour;
 
@@ -10,8 +11,11 @@ public class Player extends CardHolder {
 	private String name;
 	private int score;
 
+	private LinkedList<Card> playableCards = new LinkedList<>();
+
 	public Player() {
-		this("Player " + counter);
+		this.name = getClass().getSimpleName() + " " + counter;
+		counter++;
 	}
 
 	public Player(String name) {
@@ -24,18 +28,42 @@ public class Player extends CardHolder {
 	}
 
 	public Card playCard(Card topCard) {
-		Iterator<Card> iter = cards.iterator();
-		while (iter.hasNext()) {
-			Card next = iter.next();
-			if (next.canBePlayedOn(topCard)) {
-				iter.remove();
-				if (next instanceof WildCard) {
-					next.colour = Colour.BLUE;
-				}
-				return next;
+		Card whichCard = chooseCard(playableCards(topCard));
+		if (whichCard instanceof WildCard) {
+			chooseWildCardColour(whichCard);
+		}
+		cards.remove(whichCard);
+		return whichCard;
+	}
+
+	protected List<Card> playableCards(Card topCard) {
+		playableCards.clear();
+		for (Card card : cards) {
+			if (card.canBePlayedOn(topCard) && !(card instanceof WildFourCard)) {
+				playableCards.add(card);
 			}
 		}
+		if (playableCards.isEmpty()) {
+			for (Card card : cards) {
+				if (card instanceof WildFourCard) {
+					playableCards.add(card);
+				}
+			}
+		}
+		return playableCards;
+	}
+
+	protected Card chooseCard(List<Card> playableCards) {
+		if (playableCards.size() > 0) {
+			// most basic strategy is to play any playable card
+			Card card = playableCards.get(0);
+			return card;
+		}
 		return null;
+	}
+
+	protected void chooseWildCardColour(Card whichCard) {
+		whichCard.colour = Colour.BLUE;
 	}
 
 	@Override
@@ -50,7 +78,7 @@ public class Player extends CardHolder {
 	public void addPlayersCardsToScore(Player player) {
 		score += player.sumOfHand();
 	}
-	
+
 	public int score() {
 		return score;
 	}
