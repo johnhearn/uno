@@ -75,4 +75,15 @@ public class PlayerTest {
 	public void testToStringWithHand() {
 		assertThat(player.toString()).isEqualTo("Test Player [RED 6, RED 7, GREEN 5]");
 	}
+
+	@Test
+	public void testCalculateScore() {
+		Player winner = new Player();
+		assertThat(winner.getCurrentScore()).isEqualTo(0);
+		winner.addPlayersCardsToScore(player);
+		assertThat(winner.getCurrentScore()).isEqualTo(18);
+		winner.resetScore();
+		assertThat(winner.getCurrentScore()).isEqualTo(0);
+	}
+
 }

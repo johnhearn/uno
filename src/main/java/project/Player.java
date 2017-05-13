@@ -71,15 +71,19 @@ public class Player extends CardHolder {
 		return name + ((cards.size() > 0) ? " " + super.toString() : "");
 	}
 
-	private int sumOfHand() {
-		return cards.stream().mapToInt((c) -> c.points()).sum();
-	}
-
 	public void addPlayersCardsToScore(Player player) {
 		score += player.sumOfHand();
 	}
 
-	public int score() {
+	private int sumOfHand() {
+		return cards.stream().mapToInt((c) -> c.points()).sum();
+	}
+
+	public int getCurrentScore() {
 		return score;
+	}
+
+	public void resetScore() {
+		score = 0;
 	}
 }

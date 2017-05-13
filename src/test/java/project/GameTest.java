@@ -30,9 +30,9 @@ public class GameTest {
 		Player winner = game.play();
 		for (Player player : players) {
 			if (player == winner) {
-				assertThat(player.score()).isGreaterThanOrEqualTo(500);
+				assertThat(player.getCurrentScore()).isGreaterThanOrEqualTo(500);
 			} else {
-				assertThat(player.score()).isLessThan(500);
+				assertThat(player.getCurrentScore()).isLessThan(500);
 			}
 		}
 	}
@@ -230,9 +230,9 @@ public class GameTest {
 		Player winner = round.play();
 		for (Player player : players) {
 			if (player == winner) {
-				assertThat(player.score()).isGreaterThan(0);
+				assertThat(player.getCurrentScore()).isGreaterThan(0);
 			} else {
-				assertThat(player.score()).isEqualTo(0);
+				assertThat(player.getCurrentScore()).isEqualTo(0);
 			}
 		}
 	}
