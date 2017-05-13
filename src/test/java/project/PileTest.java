@@ -8,12 +8,14 @@ import project.Card.Colour;
 
 public class PileTest {
 	
+	private static final NumberCard GREEN2 = new NumberCard(2, Colour.GREEN);
+	
 	private Pile pile = new Pile();
 	
 	@Test
 	public void testPileTopCard() {
-		pile.addCard(new NumberCard(2, Colour.GREEN));
-		assertThat(pile.topCard()).isEqualTo(new NumberCard(2, Colour.GREEN));
+		pile.addCard(GREEN2);
+		assertThat(pile.topCard()).isEqualTo(GREEN2);
 		pile.addCard(new NumberCard(2, Colour.RED));
 		assertThat(pile.topCard()).isEqualTo(new NumberCard(2, Colour.RED));
 		pile.addCard(new NumberCard(2, Colour.BLUE));
@@ -23,10 +25,14 @@ public class PileTest {
 	@Test(expected = RuntimeException.class)
 	public void testPileDoesNotAcceptInvalidCard() {
 		pile.addCard(new NumberCard(1, Colour.GREEN));
-		pile.addCard(new NumberCard(2, Colour.GREEN));
+		pile.addCard(GREEN2);
 		pile.addCard(new NumberCard(3, Colour.BLUE));
 	}
 
-
+	@Test
+	public void testPileToString() {
+		pile.addCard(GREEN2);
+		assertThat(pile.toString()).isEqualTo(GREEN2.toString());
+	}
 
 }
