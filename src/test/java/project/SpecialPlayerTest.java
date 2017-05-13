@@ -44,10 +44,10 @@ public class SpecialPlayerTest {
 	public void testThoughtfulOffensivePlayer() {
 		ThoughtfulOffensivePlayer player = new ThoughtfulOffensivePlayer();
 		setupHand(player);
+		assertThat(player.playCard(BLUE0)).isEqualTo(new ReverseCard(Colour.BLUE));
 		assertThat(player.playCard(BLUE0)).isEqualTo(new NumberCard(3, Colour.BLUE));
 		assertThat(player.playCard(BLUE0)).isEqualTo(new NumberCard(2, Colour.BLUE));
 		assertThat(player.playCard(BLUE0)).isEqualTo(new NumberCard(1, Colour.BLUE));
-		assertThat(player.playCard(BLUE0)).isEqualTo(new ReverseCard(Colour.BLUE));
 		assertThat(player.playCard(BLUE0)).isEqualTo(new WildCard());
 	}
 
