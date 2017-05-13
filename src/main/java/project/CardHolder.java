@@ -1,9 +1,10 @@
 package project;
 
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
-public class CardHolder {
+public class CardHolder implements Iterable<Card> {
 
 	protected List<Card> cards = new LinkedList<>();
 
@@ -15,6 +16,11 @@ public class CardHolder {
 		return cards.size();
 	}
 
+	@Override
+	public Iterator<Card> iterator() {
+		return cards.iterator();
+	}
+	
 	@Override
 	public String toString() {
 		return cards.toString();

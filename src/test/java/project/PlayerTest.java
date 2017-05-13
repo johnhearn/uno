@@ -2,6 +2,8 @@ package project;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import java.util.Iterator;
+
 import org.junit.Before;
 import org.junit.Test;
 
@@ -51,5 +53,12 @@ public class PlayerTest {
 		player.giveCard(wildcard);
 		player.playCard(new Card(3, Colour.BLUE));
 		assertThat(wildcard.isDeclared()).isTrue();
+	}
+
+	@Test
+	public void testIterateOverHand() {
+		Iterator<Card> iter = player.iterator();
+		assertThat(iter.next()).isEqualTo(new Card(6, Colour.RED));
+		assertThat(iter.next()).isEqualTo(new Card(5, Colour.GREEN));
 	}
 }
