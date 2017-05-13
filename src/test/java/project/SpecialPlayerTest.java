@@ -10,7 +10,7 @@ public class SpecialPlayerTest {
 
 	@Test
 	public void testMaxCardPlayed() {
-		MaxCardPlayer player = new MaxCardPlayer();
+		DefensivePlayer player = new DefensivePlayer();
 		player.giveCard(new Card(1, Colour.BLUE));
 		player.giveCard(new Card(2, Colour.BLUE));
 		player.giveCard(new Card(3, Colour.BLUE));
@@ -23,7 +23,7 @@ public class SpecialPlayerTest {
 
 	@Test
 	public void testMinCardPlayed() {
-		MinCardPlayer player = new MinCardPlayer();
+		OffensivePlayer player = new OffensivePlayer();
 		player.giveCard(new Card(1, Colour.BLUE));
 		player.giveCard(new Card(2, Colour.BLUE));
 		player.giveCard(new Card(3, Colour.BLUE));
