@@ -30,7 +30,7 @@ public class Player extends CardHolder {
 	public Card playCard(Card topCard) {
 		Card whichCard = chooseCard(playableCards(topCard));
 		if (whichCard instanceof WildCard) {
-			chooseWildCardColour(whichCard);
+			chooseWildCardColour((WildCard)whichCard);
 		}
 		cards.remove(whichCard);
 		return whichCard;
@@ -62,8 +62,18 @@ public class Player extends CardHolder {
 		return null;
 	}
 
-	protected void chooseWildCardColour(Card whichCard) {
-		whichCard.colour = Colour.BLUE;
+	protected void chooseWildCardColour(WildCard whichCard) {
+		int red=0,green=0,blue=0,yellow=0;
+		for(Card card : playableCards) {
+			if(card.colour == Colour.RED) red++;
+			else if(card.colour == Colour.GREEN) green++;
+			else if(card.colour == Colour.BLUE) blue++;
+			else if(card.colour == Colour.YELLOW) yellow++;
+		}
+		if(red >= green && red >= blue && red >= yellow) whichCard.colour = Colour.RED;
+		else if(green >= red && green >= blue && green >= yellow) whichCard.colour = Colour.GREEN;
+		else if(blue >= red && blue >= green && blue >= yellow) whichCard.colour = Colour.BLUE;
+		else whichCard.colour = Colour.YELLOW;
 	}
 
 	@Override

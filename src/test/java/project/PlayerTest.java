@@ -54,7 +54,8 @@ public class PlayerTest {
 		player.giveCard(wildcard);
 		player.playCard(new NumberCard(3, Colour.BLUE));
 		assertThat(wildcard.isDeclared()).isTrue();
-		assertThat(wildcard.colour).isEqualTo(Colour.RED); // Two RED cards in hand
+		// Check that player chooses RED due to having 2 RED cards in test hand
+		assertThat(wildcard.colour).isEqualTo(Colour.RED);
 	}
 
 	@Test
