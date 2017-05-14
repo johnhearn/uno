@@ -14,6 +14,7 @@ import org.junit.Test;
 import org.mockito.AdditionalAnswers;
 
 import uno.model.Card.Colour;
+import uno.players.RandomPlayer;
 
 public class GameTest {
 
@@ -21,7 +22,7 @@ public class GameTest {
 	//
 	private Pack pack = new Pack();
 	private Pile pile = new Pile();
-	private Player[] players = new Player[] { new Player(), new Player(), new Player() };
+	private Player[] players = new Player[] { new RandomPlayer(), new RandomPlayer(), new RandomPlayer() };
 	private Round round = new Round(pack, pile, players);
 
 	@Test
@@ -108,7 +109,7 @@ public class GameTest {
 	public void testCardsFromPileAddedToPackWhenPackEmpty() throws Exception {
 		MockPack pack = new MockPack(17);
 		pile = new Pile();
-		players = new Player[] { new Player(), new MockPlayer(null) };
+		players = new Player[] { new RandomPlayer(), new MockPlayer(null) };
 		round = new Round(pack, pile, players);
 		round.play();
 		assertThat(pack.resetCount.get()).isGreaterThan(0);

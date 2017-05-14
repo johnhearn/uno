@@ -5,7 +5,7 @@ import java.util.List;
 
 import uno.model.Card.Colour;
 
-public class Player extends CardHolder {
+public abstract class Player extends CardHolder {
 
 	private static int counter;
 	protected final String name;
@@ -53,14 +53,7 @@ public class Player extends CardHolder {
 		return playableCards;
 	}
 
-	protected Card chooseCard(List<Card> playableCards) {
-		if (playableCards.size() > 0) {
-			// most basic strategy is to play any playable card
-			Card card = playableCards.get(0);
-			return card;
-		}
-		return null;
-	}
+	protected abstract Card chooseCard(List<Card> playableCards);
 
 	protected Colour chooseWildCardColour(WildCard whichCard) {
 		int red=0,green=0,blue=0,yellow=0;

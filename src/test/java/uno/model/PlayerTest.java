@@ -8,10 +8,11 @@ import org.junit.Before;
 import org.junit.Test;
 
 import uno.model.Card.Colour;
+import uno.players.RandomPlayer;
 
 public class PlayerTest {
 	
-	private Player player = new Player("Test Player");
+	private Player player = new RandomPlayer("Test Player");
 
 	@Before
 	public void setupTestHand() {
@@ -68,7 +69,7 @@ public class PlayerTest {
 
 	@Test
 	public void testToStringWithNoCards() {
-		player = new Player("Test Player");
+		player = new RandomPlayer("Test Player");
 		assertThat(player.toString()).isEqualTo("Test Player");
 	}
 
@@ -79,7 +80,7 @@ public class PlayerTest {
 
 	@Test
 	public void testCalculateScore() {
-		Player winner = new Player();
+		Player winner = new RandomPlayer();
 		assertThat(winner.getCurrentScore()).isEqualTo(0);
 		winner.addPlayersCardsToScore(player);
 		assertThat(winner.getCurrentScore()).isEqualTo(18);
