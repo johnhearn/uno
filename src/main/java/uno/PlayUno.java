@@ -1,4 +1,8 @@
-package uno.model;
+package uno;
+
+import uno.model.Game;
+import uno.model.Pack;
+import uno.model.Player;
 
 public class PlayUno {
 	
