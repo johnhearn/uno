@@ -1,17 +1,14 @@
-package uno.model;
+package uno.players;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 import org.junit.Test;
 
-import uno.model.DefensivePlayer;
+import uno.model.Card.Colour;
 import uno.model.NumberCard;
-import uno.model.OffensivePlayer;
 import uno.model.Player;
 import uno.model.ReverseCard;
-import uno.model.ThoughtfulOffensivePlayer;
 import uno.model.WildCard;
-import uno.model.Card.Colour;
 
 public class SpecialPlayerTest {
 

@@ -1,6 +1,9 @@
-package uno.model;
+package uno.players;
 
 import java.util.List;
+
+import uno.model.Card;
+import uno.model.Player;
 
 public class ThoughtfulOffensivePlayer extends Player {
 

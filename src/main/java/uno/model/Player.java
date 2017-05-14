@@ -8,7 +8,7 @@ import uno.model.Card.Colour;
 public class Player extends CardHolder {
 
 	private static int counter;
-	private String name;
+	protected final String name;
 	private int score;
 
 	private LinkedList<Card> playableCards = new LinkedList<>();
@@ -30,7 +30,7 @@ public class Player extends CardHolder {
 	public Card playCard(Card topCard) {
 		Card whichCard = chooseCard(playableCards(topCard));
 		if (whichCard instanceof WildCard) {
-			chooseWildCardColour((WildCard)whichCard);
+			whichCard.colour = chooseWildCardColour((WildCard)whichCard);
 		}
 		cards.remove(whichCard);
 		return whichCard;
@@ -62,7 +62,7 @@ public class Player extends CardHolder {
 		return null;
 	}
 
-	protected void chooseWildCardColour(WildCard whichCard) {
+	protected Colour chooseWildCardColour(WildCard whichCard) {
 		int red=0,green=0,blue=0,yellow=0;
 		for(Card card : playableCards) {
 			if(card.colour == Colour.RED) red++;
@@ -70,10 +70,12 @@ public class Player extends CardHolder {
 			else if(card.colour == Colour.BLUE) blue++;
 			else if(card.colour == Colour.YELLOW) yellow++;
 		}
-		if(red >= green && red >= blue && red >= yellow) whichCard.colour = Colour.RED;
-		else if(green >= red && green >= blue && green >= yellow) whichCard.colour = Colour.GREEN;
-		else if(blue >= red && blue >= green && blue >= yellow) whichCard.colour = Colour.BLUE;
-		else whichCard.colour = Colour.YELLOW;
+		Colour colour;
+		if(red >= green && red >= blue && red >= yellow) colour = Colour.RED;
+		else if(green >= red && green >= blue && green >= yellow) colour = Colour.GREEN;
+		else if(blue >= red && blue >= green && blue >= yellow) colour = Colour.BLUE;
+		else colour = Colour.YELLOW;
+		return colour;
 	}
 
 	@Override
