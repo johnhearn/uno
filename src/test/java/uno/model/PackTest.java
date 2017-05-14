@@ -4,10 +4,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import org.junit.Test;
 
-import uno.model.Pack;
-import uno.model.Pile;
-import uno.model.WildCard;
-
 public class PackTest {
 
 	@Test

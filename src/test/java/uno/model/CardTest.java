@@ -5,14 +5,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 import org.junit.Test;
 
 import nl.jqno.equalsverifier.EqualsVerifier;
-import uno.model.Card;
-import uno.model.DrawTwoCard;
-import uno.model.NumberCard;
-import uno.model.Pack;
-import uno.model.ReverseCard;
-import uno.model.SkipCard;
-import uno.model.WildCard;
-import uno.model.WildFourCard;
 import uno.model.Card.Colour;
 
 public class CardTest {

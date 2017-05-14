@@ -7,11 +7,6 @@ import java.util.Iterator;
 import org.junit.Before;
 import org.junit.Test;
 
-import uno.model.Card;
-import uno.model.NumberCard;
-import uno.model.Player;
-import uno.model.WildCard;
-import uno.model.WildFourCard;
 import uno.model.Card.Colour;
 
 public class PlayerTest {

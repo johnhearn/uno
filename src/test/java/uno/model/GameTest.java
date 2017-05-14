@@ -13,20 +13,6 @@ import java.util.stream.Stream;
 import org.junit.Test;
 import org.mockito.AdditionalAnswers;
 
-import uno.model.Card;
-import uno.model.CardHolder;
-import uno.model.DrawTwoCard;
-import uno.model.Game;
-import uno.model.NoMoreCardsException;
-import uno.model.NumberCard;
-import uno.model.Pack;
-import uno.model.Pile;
-import uno.model.Player;
-import uno.model.ReverseCard;
-import uno.model.Round;
-import uno.model.SkipCard;
-import uno.model.WildCard;
-import uno.model.WildFourCard;
 import uno.model.Card.Colour;
 
 public class GameTest {
