@@ -1,4 +1,4 @@
-package project;
+package uno.model;
 
 public class Game {
 	

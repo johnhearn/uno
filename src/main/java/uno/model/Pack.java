@@ -1,9 +1,9 @@
-package project;
+package uno.model;
 
 import java.util.Collections;
 import java.util.Random;
 
-import project.Card.Colour;
+import uno.model.Card.Colour;
 
 public class Pack extends CardHolder {
 

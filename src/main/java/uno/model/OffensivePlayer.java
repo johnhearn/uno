@@ -1,4 +1,4 @@
-package project;
+package uno.model;
 
 import java.util.List;
 

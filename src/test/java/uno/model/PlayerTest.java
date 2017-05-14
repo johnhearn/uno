@@ -1,4 +1,4 @@
-package project;
+package uno.model;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -7,7 +7,12 @@ import java.util.Iterator;
 import org.junit.Before;
 import org.junit.Test;
 
-import project.Card.Colour;
+import uno.model.Card;
+import uno.model.NumberCard;
+import uno.model.Player;
+import uno.model.WildCard;
+import uno.model.WildFourCard;
+import uno.model.Card.Colour;
 
 public class PlayerTest {
 	

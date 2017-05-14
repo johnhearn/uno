@@ -1,9 +1,9 @@
-package project;
+package uno.model;
 
 import java.util.LinkedList;
 import java.util.List;
 
-import project.Card.Colour;
+import uno.model.Card.Colour;
 
 public class Player extends CardHolder {
 

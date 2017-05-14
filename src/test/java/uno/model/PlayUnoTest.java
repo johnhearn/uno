@@ -1,4 +1,4 @@
-package project;
+package uno.model;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -11,6 +11,8 @@ import java.nio.charset.StandardCharsets;
 
 import org.apache.commons.io.output.WriterOutputStream;
 import org.junit.Test;
+
+import uno.model.PlayUno;
 
 public class PlayUnoTest {
 

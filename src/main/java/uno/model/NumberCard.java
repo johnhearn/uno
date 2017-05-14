@@ -1,6 +1,6 @@
-package project;
+package uno.model;
 
-import project.Card.Immutable;
+import uno.model.Card.Immutable;
 
 @Immutable
 public class NumberCard extends Card {

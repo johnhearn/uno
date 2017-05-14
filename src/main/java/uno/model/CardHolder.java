@@ -1,4 +1,4 @@
-package project;
+package uno.model;
 
 import java.util.Iterator;
 import java.util.LinkedList;
