@@ -16,6 +16,7 @@ dependencies {
     testCompile group: 'org.assertj', name: 'assertj-core', version:'3.4.0'
     testCompile group: 'org.mockito', name: 'mockito-core', version:'2.1.0'
     testCompile group: 'nl.jqno.equalsverifier', name: 'equalsverifier', version:'2.2.2'
+    testCompile group: 'commons-io', name: 'commons-io', version: '2.5'
 }
 jar {
     manifest {
