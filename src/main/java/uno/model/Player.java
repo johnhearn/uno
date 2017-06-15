@@ -38,13 +38,15 @@ public abstract class Player extends CardHolder {
 
 	protected List<Card> playableCards(Card topCard) {
 		playableCards.clear();
-		for (Card card : cards) {
+		for (int i = 0; i < cards.size(); i++) {
+			Card card = cards.get(i);
 			if (card.canBePlayedOn(topCard) && !(card instanceof WildFourCard)) {
 				playableCards.add(card);
 			}
 		}
 		if (playableCards.isEmpty()) {
-			for (Card card : cards) {
+			for (int i = 0; i < cards.size(); i++) {
+				Card card = cards.get(i);
 				if (card instanceof WildFourCard) {
 					playableCards.add(card);
 				}
@@ -57,7 +59,8 @@ public abstract class Player extends CardHolder {
 
 	protected Colour chooseWildCardColour(WildCard whichCard) {
 		int red=0,green=0,blue=0,yellow=0;
-		for(Card card : playableCards) {
+		for (int i=0;i<cards.size();i++) {
+			Card card = cards.get(i);
 			if(card.colour == Colour.RED) red++;
 			else if(card.colour == Colour.GREEN) green++;
 			else if(card.colour == Colour.BLUE) blue++;

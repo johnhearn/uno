@@ -10,7 +10,8 @@ public class ThoughtfulOffensivePlayer extends Player {
 	public Card chooseCard(List<Card> playableCards) {
 		Card minValueCard = null;
 		Card maxNumberCard = null;
-		for (Card next : playableCards) {
+		for (int i = 0; i < playableCards.size(); i++) {
+			Card next = playableCards.get(i);
 			if (minValueCard == null || minValueCard.points() > next.points()) {
 				minValueCard = next;
 			}
